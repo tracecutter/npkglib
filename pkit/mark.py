@@ -1,17 +1,63 @@
 """
-pkit.utils.mark
+pkit.mark
 
-Mark helper functions for pkit.
+Message emission and presentation helpers.
 
-These helpers perform no business or command-level decisions.
-This module interprets presentation context (quiet, verbose, emoji)
-to decide *when* and *how* to emit output.
+[[mark.meta.title]]
+mark
 
-Import usage:
+[[mark.meta.tagline]]
+Context-aware message emission for CLI-style output.
 
-    import pkit.utils.mark as mark
+[[mark.description]]
+This module provides helpers for emitting user-facing messages with
+consistent formatting and behavior across pkit-based tools.
 
-:copyright: Copyright (c) 2025 John Fogelin.
+It interprets presentation context (quiet, verbose, emoji) to decide
+when and how messages are emitted.
+
+[[mark.design]]
+Design principles:
+
+- no business logic
+- no command-level decisions
+- context-driven output behavior
+- consistent formatting across tools
+
+The module separates *what to say* from *how and when to say it*.
+
+[[mark.architecture]]
+Core components:
+
+- MarkContext: controls output behavior (quiet, verbose, emoji)
+- Marks: accumulates messages for deferred rendering
+- emit helpers: section, info, warn, error, verbose
+
+Output is written to stderr.
+
+[[mark.usage]]
+Typical usage:
+
+    import pkit.mark as mark
+
+    mark.configure(mark.MarkContext(verbose=True))
+
+    mark.section("Starting")
+    mark.info("Processing file")
+    mark.warn("Minor issue detected")
+    mark.error("Something failed")
+
+[[mark.notes]]
+- wrapping respects terminal width
+- indentation from caller is preserved
+- multi-line messages are not re-wrapped
+- section output is never wrapped
+
+Formatting is intentionally simple and stable.
+
+INTERNAL
+
+:copyright: Copyright (c) 2026 John Fogelin.
 :license: PROPRIETARY, see LICENSE for details.
 """
 

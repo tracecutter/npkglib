@@ -1,16 +1,47 @@
 """
-pkit.utils.fmt
+pkit.fmt
 
 Formatting primitives.
 
-Pure functions for deterministic, presentation-ready values.
+[[fmt.meta.title]]
+fmt
 
-Design goals:
+[[fmt.meta.tagline]]
+Deterministic formatting utilities for presentation-ready values.
+
+[[fmt.description]]
+This module provides pure formatting functions for converting values
+into stable, presentation-ready string representations.
+
+The functions are designed to produce deterministic output suitable for:
+
+- logging
+- diffing
+- tabular display
+- CLI output
+
+[[fmt.design]]
+Design principles:
 
 - no side effects
 - no styling (no ANSI, no emoji)
 - fixed-width where appropriate
-- grep / diff friendly output
+- stable output for diff/grep workflows
+
+Formatting is intentionally opinionated to reduce variability across tools.
+
+[[fmt.usage]]
+Typical usage:
+
+    from pkit import fmt
+
+    fmt.duration(1.234)
+    fmt.number(0.5)
+    fmt.field("percent", 0.42)
+
+[[fmt.notes]]
+This module focuses purely on value formatting. Styling concerns
+(color, emphasis, layout) are handled separately by ``pkit.style``.
 
 INTERNAL
 

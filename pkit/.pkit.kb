@@ -1,0 +1,6 @@
+1. get pkit:package "good enough"
+2. manually fork it to pbox
+3. switch pkit:main to depend on pbox
+4. fork pkit:main into psym
+5. teach psym to document pbox/package targets
+6. circle back and clean up

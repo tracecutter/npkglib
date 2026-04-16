@@ -1,23 +1,53 @@
 """
-pkit.utils.diff
+pkit.diff
 
-Diff / delta detection and rendering utilities used by --dry-run.
+Diff / delta detection and rendering utilities.
 
-Detectors produce a list of Row objects (the delta).
-Renderers consume rows and display them.
+[[diff.meta.title]]
+diff
 
-COLOR POLICY
-------------
-Foreground color is *always* chosen explicitly.
+[[diff.meta.tagline]]
+Structured diff detection and rendering utilities.
 
-- Black foreground is permitted ONLY on light backgrounds (e.g. BG_FOLD).
-- Saturated or dark backgrounds (red/green) must force a high-contrast fg.
-- Never rely on implicit terminal foreground defaults.
+[[diff.description]]
+This module provides utilities for detecting and rendering differences
+between structured or textual inputs.
 
-This preserves readability across light/dark terminal themes while
-supporting desert-sand / light-background workflows.
+Diff detectors produce a ``Delta`` (a sequence of ``Row`` objects)
+describing changes. Renderers consume these rows and present them in
+human-readable formats such as side-by-side (2up) or line-based views.
 
-:copyright: Copyright (c) 2025 John Fogelin.
+[[diff.design]]
+The diff system is intentionally split into two layers:
+
+- detectors: compute structured differences
+- renderers: format and display those differences
+
+This separation allows consistent diff logic to be reused across
+different output styles and tools.
+
+[[diff.color_policy]]
+Foreground color is always chosen explicitly.
+
+- black foreground is permitted only on light backgrounds
+- saturated backgrounds (red/green) must force high contrast
+- implicit terminal defaults are never relied upon
+
+This ensures readability across light and dark terminal themes.
+
+[[diff.usage]]
+Typical usage:
+
+    delta = diff.text(before, after)
+    diff.render(delta)
+
+[[diff.notes]]
+This module is commonly used to support ``--dry-run`` style workflows
+where proposed changes are displayed before being applied.
+
+INTERNAL
+
+:copyright: Copyright (c) 2026 John Fogelin.
 :license: PROPRIETARY, see LICENSE for details.
 """
 
@@ -30,6 +60,7 @@ import tomlkit
 from tomlkit.toml_document import TOMLDocument
 
 from pkit.utils.tty import stdout_width
+from pkit.style import style
 
 
 # -------------------------------------------------------------------
@@ -57,45 +88,19 @@ class Delta:
 # Renderer helpers
 # -------------------------------------------------------------------
 
-
 MAX_COL_WIDTH = 40
-ELLIPSIS = " [ … ] "
-RESET = "\x1b[0m"
-
-# Backgrounds
-BG_RED = "\x1b[41m"
-BG_GREEN = "\x1b[42m"
-BG_FOLD = "\x1b[47m"  # light gray / desert-sand friendly
-
-# Foregrounds
-FG_BLACK = "\x1b[30m"  # allowed ONLY on light backgrounds
-FG_WHITE = "\x1b[97m"  # high contrast
-FG_DEFAULT = "\x1b[39m"  # terminal default
-
-FOLD_LABEL = "<---- folded ---->"
-
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
 
-def _style(bg: str, text: str) -> str:
-    """
-    Apply background + safe foreground pairing.
+# -------------------------------------------------------------------
+# Renderer helpers
+# -------------------------------------------------------------------
 
-    POLICY:
-    - BG_FOLD  -> black fg (light background)
-    - BG_RED   -> white fg
-    - BG_GREEN -> default fg (theme-respecting)
-    """
-    if bg == BG_FOLD:
-        fg = FG_BLACK
-    elif bg == BG_RED:
-        fg = FG_WHITE
-    elif bg == BG_GREEN:
-        fg = FG_DEFAULT
-    else:
-        fg = FG_DEFAULT
+from pkit.style import style
 
-    return f"{bg}{fg}{text}{RESET}"
+MAX_COL_WIDTH = 40
+
+ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
 
 def _visible_len(s: str) -> int:
@@ -114,16 +119,16 @@ def _colorize(row: Row, *, color: bool) -> tuple[str, str]:
         return left, right
 
     if row.kind == "insert":
-        return "", _style(BG_GREEN, right)
+        return "", style.insert(right)
 
     if row.kind == "delete":
-        return _style(BG_RED, left), ""
+        return style.delete(left), ""
 
     if row.kind == "replace":
-        return _style(BG_RED, left), _style(BG_GREEN, right)
+        return style.replace_left(left), style.replace_right(right)
 
     if row.kind == "fold":
-        label = _style(BG_FOLD, FOLD_LABEL)
+        label = style.fold()
         return label, label
 
     return left, right  # equal
@@ -154,14 +159,16 @@ def _truncate_middle(s: str, width: int) -> str:
     """
     Truncate string to fit width, preserving start and end context.
     """
+    ellipsis = style.ELLIPSIS
+
     if _visible_len(s) <= width:
         return s
 
-    if width <= _visible_len(ELLIPSIS) + 2:
-        return ELLIPSIS[:width]
+    if width <= _visible_len(ellipsis) + 2:
+        return ellipsis[:width]
 
-    keep = (width - _visible_len(ELLIPSIS)) // 2
-    return s[:keep] + ELLIPSIS + s[-keep:]
+    keep = (width - _visible_len(ellipsis)) // 2
+    return s[:keep] + ellipsis + s[-keep:]
 
 
 # -------------------------------------------------------------------
@@ -311,4 +318,4 @@ def render_lines(delta: Delta) -> None:
             if row.right is not None:
                 print(f"+{row.right}")
         elif row.kind == "fold":
-            print(f"... {FOLD_LABEL} ...")
+            print(f"... {style.FOLD_LABEL} ...")

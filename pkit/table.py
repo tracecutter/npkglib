@@ -1,23 +1,61 @@
 """
-pkit.utils.table
+pkit.table
 
 Tabular data rendering utilities.
 
-Detectors produce a list of row dictionaries.
-Renderers consume rows and display them.
+[[table.meta.title]]
+table
 
-This module owns:
+[[table.meta.tagline]]
+Lightweight tabular rendering with deterministic layout.
 
-- column ordering
+[[table.description]]
+This module provides utilities for rendering tabular data in a
+consistent, terminal-friendly format.
+
+Data producers supply rows as dictionaries. The Table class handles:
+
+- column inference and ordering
 - width calculation
-- padding / alignment
+- padding and alignment
 - truncation
 
-No domain knowledge lives here.
+[[table.design]]
+Design principles:
+
+- no domain knowledge
+- deterministic layout
+- minimal configuration
+- terminal-width awareness
+
+This module focuses purely on presentation. It does not interpret or
+transform data beyond string conversion.
+
+[[table.usage]]
+Typical usage:
+
+    rows = [
+        {"name": "alice", "count": 3},
+        {"name": "bob", "count": 42},
+    ]
+
+    print(Table(rows=rows))
+
+Optional explicit column ordering:
+
+    Table(rows=rows, columns=["name", "count"])
+
+[[table.notes]]
+- last column is truncated to respect terminal width
+- values are stringified without styling
+- formatting is stable and diff-friendly
+
+Formatting concerns are intentionally separate from styling
+(see ``pkit.style``).
 
 INTERNAL
 
-:copyright: Copyright (c) 2025 John Fogelin.
+:copyright: Copyright (c) 2026 John Fogelin.
 :license: PROPRIETARY, see LICENSE for details.
 """
 

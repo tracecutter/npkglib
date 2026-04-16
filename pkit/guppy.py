@@ -1,18 +1,64 @@
 """
-pkit.utils.guppy
+pkit.guppy
 
-A minimal runtime event pipeline utility.
+Minimal runtime event pipeline.
 
-Architecture
-------------
+[[guppy.meta.title]]
+guppy
 
-trigger() → post(Event) → EventBus → sinks
+[[guppy.meta.tagline]]
+Lightweight event bus and publication pipeline.
 
-Some sinks may publish curated summaries:
+[[guppy.description]]
+This module provides a minimal runtime event system for emitting,
+routing, and optionally transforming events within a process.
+
+The system is intentionally simple and designed for:
+
+- tracing
+- telemetry
+- structured logging
+- lightweight observability
+
+[[guppy.architecture]]
+Core flow:
+
+    trigger → post(Event) → EventBus → sinks
+
+Some sinks may transform events into higher-level outputs:
 
     Event → PublisherSink → Publication → subscribers
 
-If guppy is not bootstrapped, events are dropped.
+If the system is not bootstrapped, events are silently dropped.
+
+[[guppy.design]]
+Design principles:
+
+- minimal surface area
+- no external dependencies
+- synchronous dispatch
+- opt-in activation via bootstrap()
+
+This keeps the system safe to import anywhere without side effects.
+
+[[guppy.usage]]
+Typical usage:
+
+    import pkit.guppy as guppy
+
+    guppy.bootstrap()
+    guppy.post(EventMsg(stream="trace", name="start"))
+
+Sinks must be registered explicitly on the EventBus.
+
+[[guppy.notes]]
+This module is intentionally unopinionated about:
+
+- persistence
+- transport
+- formatting (delegated to sinks)
+
+Formatting helpers are provided via ``pkit.fmt``.
 
 INTERNAL
 

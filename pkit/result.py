@@ -1,11 +1,57 @@
 """
-pkit.utils.result
+pkit.result
 
-Place holder for result functions for pkit.
+Result emission helpers.
+
+[[result.meta.title]]
+result
+
+[[result.meta.tagline]]
+Primary output channel for command results.
+
+[[result.description]]
+This module provides a minimal abstraction for emitting primary
+command results to stdout.
+
+It represents the "result channel" of a tool, distinct from:
+
+- mark (narration / diagnostics → stderr)
+- guppy (events / telemetry → optional pipeline)
+
+[[result.design]]
+Design principles:
+
+- single responsibility: emit final results
+- minimal policy surface
+- context-driven behavior
+- stdout only
+
+Commands are responsible for mapping user intent (e.g. --dry-run,
+--diff, --check) into a ResultContext.
+
+[[result.modes]]
+Supported modes:
+
+- nominal: normal output
+- proof: reserved for verification-style output
+- diff: reserved for structured diff output
+- null: suppress all output
+
+[[result.usage]]
+Typical usage:
+
+    import pkit.result as result
+
+    result.configure(ResultContext(mode="nominal"))
+    result.text("hello world")
+
+[[result.notes]]
+This module is intentionally small and may evolve as guppy-based
+result flows mature.
 
 INTERNAL
 
-:copyright: Copyright (c) 2025 John Fogelin.
+:copyright: Copyright (c) 2026 John Fogelin.
 :license: PROPRIETARY, see LICENSE for details.
 """
 

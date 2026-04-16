@@ -3,30 +3,30 @@ pkit._api
 
 Bootstrap API decorator registry.
 
-This module provides the ``api`` decorator used to declare public API
-entities in a project.  It intentionally lives in a minimal dependency
-layer so that it can be imported by any module without introducing
-circular import problems.
+[[_api.meta.title]]
+_api
 
-Design rule
------------
+[[_api.meta.tagline]]
+Minimal dependency-free API registry and decorator.
 
-This module must remain dependency-free with respect to the rest of
-``pkit``.  In particular it must **not** import:
+[[_api.description]]
+This module provides the core ``api`` decorator used to declare public
+API entities within a package.
 
-    pkit.core.*
-    pkit.api
-    pkit.docs_*
+It is intentionally designed to be dependency-free with respect to the
+rest of ``pkit`` so that it can be safely imported from any module
+without introducing circular dependencies.
 
-Only standard-library modules may be imported here.
+The decorator records annotated objects in a lightweight registry and
+optionally promotes them to the package namespace.
 
-Higher layers (for example ``pkit.api``) extend the registry with
-utilities for extracting documentation symbols from decorated objects.
+[[_api.design.constraints]]
+- must remain dependency-free (standard library only)
+- must not import higher-level modules (e.g. pkit.api)
+- safe for broad import across package modules
 
-Typical usage
--------------
-
-Project code declares public API elements using the decorator:
+[[_api.usage]]
+Typical usage:
 
     from pkit import api
 
@@ -34,13 +34,15 @@ Project code declares public API elements using the decorator:
     class Backend:
         ...
 
-The decorator records the object in an internal registry and ensures
-that it is exported through the package namespace and ``__all__``.
+Decorated objects are:
 
-Documentation systems can later inspect this registry to generate API
-references such as:
+- recorded in the internal registry
+- optionally exported onto the package namespace
+- included in the package ``__all__``
 
-    <project>-api(3)
+[[_api.notes]]
+Higher-level tooling (e.g. psym) may inspect the registry to derive
+structured documentation or API references.
 
 INTERNAL
 
@@ -53,7 +55,6 @@ from __future__ import annotations
 import sys
 import importlib
 import pkgutil
-
 from typing import Any
 from collections.abc import Callable
 
@@ -66,14 +67,8 @@ class _API:
     def __init__(self) -> None:
         self._registry: list[tuple[Any, dict[str, Any]]] = []
 
-    # ---------------------------------------------------------
-    # decorator
-    # ---------------------------------------------------------
-
     def __call__(self, **meta) -> Callable:
-
         def decorator(obj: Any) -> Any:
-
             info = {
                 "name": obj.__name__,
                 "module": obj.__module__,
@@ -83,17 +78,12 @@ class _API:
 
             self._registry.append((obj, info))
 
-            # ---- export object onto top-level package namespace
-
             package = obj.__module__.split(".", 1)[0]
             pkg = sys.modules.get(package)
 
             if pkg is not None:
-
-                # expose object on package
                 setattr(pkg, obj.__name__, obj)
 
-                # maintain package __all__
                 if not hasattr(pkg, "__all__"):
                     pkg.__all__ = []  # type: ignore[attr-defined]
 
@@ -106,13 +96,8 @@ class _API:
 
         return decorator
 
-    # ---------------------------------------------------------
-    # discovery
-    # ---------------------------------------------------------
-
     def discover(self, package: str) -> None:
         """Import all modules in a package to trigger decorators."""
-
         root = importlib.import_module(package)
 
         if not hasattr(root, "__path__"):
@@ -122,5 +107,4 @@ class _API:
             importlib.import_module(mod.name)
 
 
-# singleton
 api = _API()

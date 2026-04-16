@@ -3,10 +3,24 @@ pkit.api
 
 Declarative public API support for pkit.
 
-[[api.overview]]
+[[api.meta.title]]
+api
 
-The API subsystem allows source code to declare public interface
-elements using the ``api`` decorator:
+[[api.meta.tagline]]
+Decorator-based declaration of public API entities.
+
+[[api.description]]
+This module provides the public ``api`` decorator used to mark
+functions, classes, and other objects as part of the supported
+public surface of pkit.
+
+The decorator is backed by the lightweight registry implemented in
+``pkit._api``. It allows public interface declarations to remain
+close to the code they describe while staying dependency-light and
+safe to import broadly.
+
+[[api.usage]]
+Typical usage:
 
     from pkit import api
 
@@ -14,57 +28,22 @@ elements using the ``api`` decorator:
     def my_function():
         ...
 
-In ``pkit``, the decorator is backed by a small registry implemented in
-``pkit._api``.  Decorated objects are recorded along with lightweight
-metadata and are exported onto the package namespace.
+Optional metadata may be attached to help organize or describe API
+entities for downstream tooling:
 
-Currently provided
-------------------
+    @api(group="diff")
+    def render_diff(...):
+        ...
 
-The bootstrap API layer currently supports:
+[[api.notes]]
+This module is the public facade for API declaration.
 
-\b
-- declaration of public API entities via ``@api(...)``
-- registry of decorated objects and associated metadata
-- export of decorated objects onto the package namespace
-- maintenance of the package ``__all__`` list
-- optional package discovery via module import walking
+Implementation details of registration and low-level registry
+management live in ``pkit._api``.
 
-This keeps public API declaration close to the code that implements it,
-while remaining dependency-light and safe to import broadly.
-
-[[api.design]]
-
-The longer-term design is for the API subsystem to serve as a source of
-structured information for documentation generation.
-
-In that fuller model, decorated classes and functions may later be
-translated into documentation symbols describing things such as:
-
-\b
-- entity kind
-- defining module
-- optional grouping metadata
-- summary text from docstrings
-- selected public member metadata for classes
-
-That extraction layer and its documentation backends are not yet
-implemented here.  ``pkit.api`` currently provides the declarative
-registry layer only.
-
-[[api.example]]
-
-Example:
-
-```code
-    from pkit import api
-
-    @api(group="example")
-    def example():
-        '''
-        Minimal example API entity.
-        '''
-```
+Documentation tooling such as psym may later consume this registry
+to derive structured documentation symbols from declared API
+entities.
 
 INTERNAL
 
@@ -72,20 +51,8 @@ INTERNAL
 :license: PROPRIETARY, see LICENSE for details.
 """
 
-from __future__ import annotations  # noqa: F401
+from __future__ import annotations
 
 from pkit._api import api
 
-
-@api(group="example")
-def example() -> None:
-    """
-    Minimal example API entity.
-    """
-    return
-
-
-all = [
-    "api",
-    "example",
-]
+__all__ = ["api"]

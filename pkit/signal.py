@@ -1,25 +1,76 @@
 """
-pkit.utils.signal
+pkit.signal
 
 Runtime signalling primitives.
 
-Signals represent runtime occurrences but perform no routing.
+[[signal.meta.title]]
+signal
 
-Architecture
+[[signal.meta.tagline]]
+Lightweight runtime signalling and tracing helpers.
 
-    Signaller → Signal → trigger() → EventMsg → guppy.post() → EventBus → sinks
+[[signal.description]]
+This module provides primitives for emitting structured runtime signals
+with near-zero overhead when disabled.
 
-Design goals
+Signals represent occurrences within a program but perform no routing
+themselves. They are translated into events and forwarded to the
+``pkit.guppy`` event pipeline.
 
-    - extremely low overhead when idle
-    - simple synchronous instrumentation
-    - extensible signal types
-    - decorators for structural tracing
-    - inline watchpoints for explicit tracing
+[[signal.architecture]]
+Core flow:
+
+    signaller → Signal → trigger() → EventMsg → guppy.post()
+             → EventBus → sinks
+
+Signals are inert unless explicitly enabled.
+
+[[signal.design]]
+Design principles:
+
+- extremely low overhead when disabled
+- synchronous instrumentation
+- explicit enable/disable control
+- composable signal types
+- decorator + inline usage
+
+This allows signals to be left in production code safely.
+
+[[signal.usage]]
+Three primary usage patterns:
+
+Inline watchpoint:
+
+    trace("event", count=3)
+
+Function decorator:
+
+    @trace
+    def work():
+        ...
+
+Class decorator (selected methods):
+
+    @trace("run", "execute")
+    class Worker:
+        ...
+
+[[signal.types]]
+Built-in signal streams:
+
+- trace: structural execution tracing
+- telemetry: runtime metrics and measurements
+
+[[signal.notes]]
+- signals do not format output (handled by sinks)
+- signals do not persist data
+- signals are intended to compose with ``pkit.guppy``
+
+This module forms the instrumentation layer of pkit.
 
 INTERNAL
 
-:copyright: Copyright (c) 2026 John Fogelin. All rights reserved. See AUTHORS.
+:copyright: Copyright (c) 2026 John Fogelin.
 :license: PROPRIETARY, see LICENSE for details.
 """
 
