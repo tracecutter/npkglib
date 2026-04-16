@@ -1,5 +1,5 @@
 """
-pkit.signal
+pbox.signal
 
 Runtime signalling primitives.
 
@@ -15,7 +15,7 @@ with near-zero overhead when disabled.
 
 Signals represent occurrences within a program but perform no routing
 themselves. They are translated into events and forwarded to the
-``pkit.guppy`` event pipeline.
+``pbox.guppy`` event pipeline.
 
 [[signal.architecture]]
 Core flow:
@@ -64,9 +64,9 @@ Built-in signal streams:
 [[signal.notes]]
 - signals do not format output (handled by sinks)
 - signals do not persist data
-- signals are intended to compose with ``pkit.guppy``
+- signals are intended to compose with ``pbox.guppy``
 
-This module forms the instrumentation layer of pkit.
+This module forms the instrumentation layer of pbox.
 
 INTERNAL
 
@@ -77,8 +77,8 @@ INTERNAL
 import functools
 import time
 
-from pkit.utils import guppy
-from pkit.utils.guppy import Scalar, EventMsg
+from pbox import guppy
+from pbox.guppy import Scalar, EventMsg
 
 
 # ---------------------------------------------------------------------------

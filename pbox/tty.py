@@ -1,5 +1,5 @@
 """
-pkit.tty
+pbox.tty
 
 Terminal environment helpers.
 
@@ -26,15 +26,15 @@ Design principles:
 [[tty.usage]]
 Typical usage:
 
-    from pkit.tty import stdout_width
+    from pbox.tty import stdout_width
 
     width = stdout_width()
 
 Used by rendering modules such as:
 
-- pkit.table
-- pkit.diff
-- pkit.mark
+- pbox.table
+- pbox.diff
+- pbox.mark
 
 [[tty.notes]]
 - non-TTY environments return an effectively unbounded width

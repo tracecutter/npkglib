@@ -7,7 +7,7 @@ Do not edit this artifact directly.
 **{{ code.meta.tagline }}**
 
 <p align="center">
-  <img src="docs/pkit/assets/pkit.png" width="180" alt="pkit logo">
+  <img src="docs/pfig/assets/pbox.png" width="180" alt="pbox logo">
 </p>
 
 <p align="center">
@@ -31,31 +31,9 @@ Do not edit this artifact directly.
 
 ---
 
-## Asset delivery (d2d) {{#toc.d2d}}
+## Modules {{#toc.modules}}
 
-{{ code.d2d.summary }}
-
----
-
-## Quick start {{#toc.quick-start}}
-
-{{ code.section.quickstart.intro }}
-
-### First command
-
-{{ code.section.quickstart.first_command }}
-
-### Safe exploration
-
-{{ code.section.quickstart.safety }}
-
-### Sample workflow
-
-{{ code.section.quickstart.workflow }}
-
-### Next steps
-
-{{ code.section.quickstart.next }}
+{{ dynamic.modules }}
 
 ---
 
@@ -67,17 +45,7 @@ Do not edit this artifact directly.
 
 ## Usage {{#toc.usage}}
 
-{{ dynamic.cli.help.root }}
-
-### Writing custom documentation renderers {{#toc.renderer-usage}}
-
-{{ fs.section.renderer.development }}
-
----
-
-## Project status {{#toc.project-status}}
-
-{{ code.section.status }}
+{{ code.section.usage }}
 
 ---
 
@@ -96,3 +64,4 @@ Do not edit this artifact directly.
 ## Links {{#toc.links}}
 
 {{ code.section.links }}
+

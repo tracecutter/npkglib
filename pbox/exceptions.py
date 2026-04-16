@@ -1,29 +1,29 @@
 """
-pkit.exceptions
+pbox.exceptions
 
-Core exception types for pkit.
+Core exception types for pbox.
 
 [[exceptions.meta.title]]
 exceptions
 
 [[exceptions.meta.tagline]]
-Base exception hierarchy for pkit.
+Base exception hierarchy for pbox.
 
 [[exceptions.description]]
-This module defines the base exception type used across pkit.
+This module defines the base exception type used across pbox.
 
-All domain-specific errors should derive from ``PkitError`` to allow
-callers to catch pkit-specific failures without masking unrelated
+All domain-specific errors should derive from ``PboxError`` to allow
+callers to catch pbox-specific failures without masking unrelated
 exceptions.
 
 [[exceptions.usage]]
 Typical usage:
 
-    from pkit.exceptions import PkitError
+    from pbox.exceptions import PboxError
 
     try:
         ...
-    except PkitError:
+    except PboxError:
         ...
 
 [[exceptions.notes]]
@@ -37,7 +37,7 @@ INTERNAL
 """
 
 
-class PkitError(Exception):
-    """Base class for all pkit errors."""
+class PboxError(Exception):
+    """Base class for all pbox errors."""
 
     pass

@@ -1,12 +1,12 @@
 .PHONY: all help init init-git init-gh \
-		refresh reinstate reincarinate \
+		refresh reinstate reincarnate \
 		clean clean-pyc clean-build clean-docs clean-gen clean-bak \
-		check check-sys check-readme check-lint check-style reformat \
+		check check-sys check-types check-readme check-lint check-style reformat \
 		test test-coverage test-all \
 		docs docs-% docs-%-% \
 		dist release unrelease publish unpublish \
 		pub-docs pub-gh pub-pypi pub-brew \
-		corpus
+		status corpus
 
 
 .DEFAULT_GOAL := refresh
@@ -32,7 +32,13 @@ README_ROOT			:= README.md
 BREWREPO			:= homebrew-$(PROJECT_NAME)
 
 # Does this project need to be executed in-situ within target project?
-IN_SITU				:= $(if $(filter in-situ,$(shell pfig get -k tool.npkg.type 2>/dev/null)),1,0)
+NPKG_TYPE			:= $(or $(shell pfig get -k tool.npkg.type 2>/dev/null),external)
+NPKG_ROLE			:= $(or $(shell pfig get -k tool.npkg.role 2>/dev/null),tool)
+
+IS_IN_SITU			:= $(if $(filter in-situ,$(NPKG_TYPE)),1,0)
+IS_EXTERNAL			:= $(if $(filter external,$(NPKG_TYPE)),1,0)
+IS_TOOL				:= $(if $(filter tool,$(NPKG_ROLE)),1,0)
+IS_PACKAGE			:= $(if $(filter package,$(NPKG_ROLE)),1,0)
 
 INIT_STAMP			= .init_stamp
 
@@ -88,7 +94,7 @@ help:
 	@echo "docs-<tool>-clean - remove documentation build artifacts"
 	@echo "preflight - check everything is ready for release"
 	@echo "dist - generate full distribution and stage package for release."
-	@echo "release - release current version for local use outside virtual environent (via pipx)"
+	@echo "release - tag, build, push, and perform local post-release install if applicable"
 	@echo "unrelease - remove local release from current environment and local installation (pipx)"
 	@echo "publish -  publish current release and documentation to GitHub for pip and brew install"
 	@echo "pub-docs - publish documents on GitHub.io"
@@ -107,36 +113,45 @@ $(INIT_STAMP):
 
 	@echo "🔧 Initializing development environment for $(PROJECT_NAME)…"
 
-	@echo "📦 Installing development tools…"
+	@echo "📦 Installing base development tools…"
 	pip install --upgrade pip wheel build twine
 
-	@echo "📦 Installing project in editable mode…"
-	pip install -e ".[dev]"
-
-	@echo "📚 Installing MANPATH in venv activation hook…"
-	@HOOKDIR="$${VIRTUAL_ENV}/bin/postactivate.d"; \
-	HOOK="$$HOOKDIR/$(PROJECT_NAME)-manpath.sh"; \
-	MANDEV="$(CURDIR)/docs/pfig/_build/manpage"; \
-	mkdir -p "$$HOOKDIR"; \
-	echo "# $(PROJECT_NAME) dev manpages" > "$$HOOK"; \
-	echo "DEV_MANPATH=\"$$MANDEV\"" >> "$$HOOK"; \
-	echo "case \":\$$MANPATH:\" in" >> "$$HOOK"; \
-	echo "  *:\$$DEV_MANPATH:*) ;;" >> "$$HOOK"; \
-	echo "  *) export MANPATH=\"\$$DEV_MANPATH:\$$(manpath)\" ;; " >> "$$HOOK"; \
-	echo "esac" >> "$$HOOK"; \
-	echo "✔ MANPATH hook installed"; \
-	echo ""; \
-	echo "ℹ Reactivate the venv to apply:"; \
-	echo "  deactivate && source $${VIRTUAL_ENV}/bin/activate"
-
-	@echo "🔍 Running pfig lint (if available)…"
-	@if command -v pfig >/dev/null 2>&1; then \
-		pfig lint; \
+	@echo "📦 Installing project in editable mode (dev)…"
+	@if pip install -e ".[dev]"; then \
+		echo "✔ Editable install complete"; \
 	else \
-		echo "⚠️ pfig not found"; \
+		echo "⚠️ Dev install incomplete (likely missing local deps such as pfig)"; \
+	fi
+
+	@echo "📚 Configuring MANPATH (if applicable)…"
+	@if [ "$(IS_TOOL)" = "1" ] && [ "$(IS_EXTERNAL)" = "1" ] && [ -d docs/pfig/_build/manpage ]; then \
+		HOOKDIR="$${VIRTUAL_ENV}/bin/postactivate.d"; \
+		HOOK="$$HOOKDIR/$(PROJECT_NAME)-manpath.sh"; \
+		MANDEV="$(CURDIR)/docs/pfig/_build/manpage"; \
+		mkdir -p "$$HOOKDIR"; \
+		echo "# $(PROJECT_NAME) dev manpages" > "$$HOOK"; \
+		echo "DEV_MANPATH=\"$$MANDEV\"" >> "$$HOOK"; \
+		echo "case \":\$$MANPATH:\" in" >> "$$HOOK"; \
+		echo "  *:\$$DEV_MANPATH:*) ;;" >> "$$HOOK"; \
+		echo "  *) export MANPATH=\"\$$DEV_MANPATH:\$$(manpath)\" ;; " >> "$$HOOK"; \
+		echo "esac" >> "$$HOOK"; \
+		echo "✔ MANPATH hook installed"; \
+		echo ""; \
+		echo "ℹ Reactivate the venv to apply:"; \
+		echo "  deactivate && source $${VIRTUAL_ENV}/bin/activate"; \
+	else \
+		echo "ℹ️ Skipping MANPATH hook"; \
+	fi
+
+	@echo "🔍 Running initial lint (if applicable)…"
+	@if [ "$(IS_TOOL)" = "1" ] && command -v pfig >/dev/null 2>&1; then \
+		pfig lint || echo "⚠️ pfig lint reported issues"; \
+	else \
+		echo "ℹ️ Skipping system lint"; \
 	fi
 
 	@touch $(INIT_STAMP)
+	@echo "✅ Initialization complete."
 
 init-git:
 	@if [ -d .git ]; then \
@@ -279,17 +294,21 @@ check: check-sys check-readme check-lint check-style check-types
 
 check-sys:
 	@echo "🔍 Running system/environment validation via pfig lint…"
-	@if ! command -v pfig >/dev/null 2>&1; then \
-		echo "❌ pfig not found in PATH — install with: pipx install pfig"; \
-		exit 1; \
+	@if [ "$(IS_TOOL)" = "1" ]; then \
+		pfig lint; \
+	else \
+		echo "ℹ️ Skipping system lint (package project)"; \
 	fi
-	pfig lint
-	@echo "✅ System checks passed."
 
 check-readme:
 	@echo "🔍 Checking README.md is current…"
+	@if [ ! -f "$(README_BUILD)" ]; then \
+		echo "❌ Generated README missing: $(README_BUILD)"; \
+		echo "   Run: make docs"; \
+		exit 1; \
+	fi
 	@diff -u $(README_BUILD) $(README_ROOT) >/dev/null || \
-		( echo "❌ README.md is out of date. Run: make readme" && exit 1 )
+		( echo "❌ README.md is out of date. Run: make docs-sync" && exit 1 )
 	@echo "✅ README.md is up to date."
 
 check-style:
@@ -396,10 +415,14 @@ dist:
 #  🚀 RELEASE / PUBLISH PIPELINE
 # ------------------------------------------------------------
 
-preflight: clean refresh docs docs-sync test check dist
+preflight: validate-npkg clean refresh docs docs-sync test check dist
 	@echo "🔍 Preflight: validating release readiness…"
-	@pfig lint release
-	@echo "✅ Takeoff clearance granted for $(PROJECT_NAME) $(VERSION)" 
+	@if [ "$(IS_TOOL)" = "1" ]; then \
+		pfig lint release; \
+	else \
+		echo "ℹ️ Skipping release-mode system lint (package project)"; \
+	fi
+	@echo "✅ Takeoff clearance granted for $(PROJECT_NAME) $(VERSION)"
 
 release-guard:
 	$(call ensure-venv-active)
@@ -413,6 +436,20 @@ release-guard:
 	fi
 	@echo "🔎 Verifying pfig install enforcement..."
 	@env -u D2D_DEV pfig get -k project.version > /dev/null
+
+validate-npkg:
+	@if [ "$(IS_PACKAGE)" = "1" ] && [ "$(IS_EXTERNAL)" = "1" ]; then \
+		echo "❌ Invalid config: package cannot be external"; \
+		exit 1; \
+	fi
+
+status:
+	@echo "NPKG_ROLE=$(NPKG_ROLE)"
+	@echo "NPKG_TYPE=$(NPKG_TYPE)"
+	@echo "IS_TOOL=$(IS_TOOL)"
+	@echo "IS_PACKAGE=$(IS_PACKAGE)"
+	@echo "IS_EXTERNAL=$(IS_EXTERNAL)"
+	@echo "IS_IN_SITU=$(IS_IN_SITU)"
 
 # ------------------------------------------------------------
 #  🚀 Local release
@@ -459,9 +496,9 @@ release: release-guard preflight
 	}
 
 	@# --------------------------------------------------------
-	@# Local install via pipx (skip silently if in-situ)
+	@# Local install via pipx (external tools only)
 	@# --------------------------------------------------------
-	@if [ "$(IN_SITU)" != "1" ]; then \
+	@if [ "$(IS_TOOL)" = "1" ] && [ "$(IS_EXTERNAL)" = "1" ]; then \
 		WHEEL=$$(printf "%s\n" dist/*$(VERSION)*.whl 2>/dev/null | head -n 1); \
 		if [ -z "$$WHEEL" ]; then \
 			echo "❌ No wheel found in dist/"; \
@@ -471,6 +508,8 @@ release: release-guard preflight
 		pipx install --force "$$WHEEL" >/dev/null || { \
 			echo "❌ pipx install failed"; exit 1; \
 		}; \
+	else \
+		echo "ℹ️ Skipping pipx install"; \
 	fi
 
 	@echo "🎉 Local release complete for $(PROJECT_NAME) $(VERSION)"
@@ -480,6 +519,8 @@ release: release-guard preflight
 # ------------------------------------------------------------
 
 pub-docs:
+	$(call ensure-venv-active)
+	$(call ensure-correct-venv)
 	@echo "🌐 Publishing documentation tools..."
 	@for tool in $(DOCS_TOOLS); do \
 		$(MAKE) docs-$$tool-publish; \
@@ -504,7 +545,7 @@ pub-pfix: release
 
 pub-pypi: release
 	@echo "🚀 Uploading $(PROJECT_NAME) $(VERSION) to PyPI…"
-	. .venv/bin/activate && twine upload dist/*
+	twine upload dist/*
 	@echo "📦 Uploaded to PyPI."
 
 # ------------------------------------------------------------

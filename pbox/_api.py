@@ -1,5 +1,5 @@
 """
-pkit._api
+pbox._api
 
 Bootstrap API decorator registry.
 
@@ -14,7 +14,7 @@ This module provides the core ``api`` decorator used to declare public
 API entities within a package.
 
 It is intentionally designed to be dependency-free with respect to the
-rest of ``pkit`` so that it can be safely imported from any module
+rest of ``pbox`` so that it can be safely imported from any module
 without introducing circular dependencies.
 
 The decorator records annotated objects in a lightweight registry and
@@ -22,13 +22,13 @@ optionally promotes them to the package namespace.
 
 [[_api.design.constraints]]
 - must remain dependency-free (standard library only)
-- must not import higher-level modules (e.g. pkit.api)
+- must not import higher-level modules (e.g. pbox.api)
 - safe for broad import across package modules
 
 [[_api.usage]]
 Typical usage:
 
-    from pkit import api
+    from pbox import api
 
     @api(group="backend")
     class Backend:

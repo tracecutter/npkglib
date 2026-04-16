@@ -1,5 +1,5 @@
 """
-pkit.style
+pbox.style
 
 Styling primitives and presentation policy.
 
@@ -10,7 +10,7 @@ style
 Centralized styling and presentation helpers.
 
 [[style.description]]
-This module defines styling primitives used across pkit for
+This module defines styling primitives used across pbox for
 consistent visual output.
 
 It centralizes:
@@ -43,7 +43,7 @@ This ensures readability across dark and light terminals.
 [[style.usage]]
 Typical usage:
 
-    from pkit.style import style
+    from pbox.style import style
 
     style.insert("added line")
     style.delete("removed line")
@@ -54,8 +54,8 @@ Or for lower-level control:
     style.bg(style.BG_GREEN, "text")
 
 [[style.notes]]
-- styling is separate from formatting (see ``pkit.fmt``)
-- styling is separate from emission (see ``pkit.mark``)
+- styling is separate from formatting (see ``pbox.fmt``)
+- styling is separate from emission (see ``pbox.mark``)
 - this module is intentionally opinionated
 
 INTERNAL

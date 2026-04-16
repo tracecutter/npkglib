@@ -1,7 +1,7 @@
 ### Recommended: pipx (global, isolated)
 
 ```bash
-pipx install pkit
+pipx install pbox
 ```
 
-This makes `pkit` available globally without polluting project environments.
+This makes `pbox` available globally without polluting project environments.

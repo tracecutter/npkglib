@@ -1,5 +1,5 @@
 """
-pkit.mark
+pbox.mark
 
 Message emission and presentation helpers.
 
@@ -11,7 +11,7 @@ Context-aware message emission for CLI-style output.
 
 [[mark.description]]
 This module provides helpers for emitting user-facing messages with
-consistent formatting and behavior across pkit-based tools.
+consistent formatting and behavior across pbox-based tools.
 
 It interprets presentation context (quiet, verbose, emoji) to decide
 when and how messages are emitted.
@@ -38,7 +38,7 @@ Output is written to stderr.
 [[mark.usage]]
 Typical usage:
 
-    import pkit.mark as mark
+    import pbox.mark as mark
 
     mark.configure(mark.MarkContext(verbose=True))
 
@@ -67,7 +67,7 @@ import sys
 import textwrap
 from dataclasses import dataclass, field
 
-from pkit.utils.tty import stdout_width
+from pbox.tty import stdout_width
 
 
 # ---------------------------------------------------------------------------

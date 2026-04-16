@@ -1,5 +1,5 @@
 """
-pkit.diff
+pbox.diff
 
 Diff / delta detection and rendering utilities.
 
@@ -59,8 +59,8 @@ from collections.abc import Iterable
 import tomlkit
 from tomlkit.toml_document import TOMLDocument
 
-from pkit.utils.tty import stdout_width
-from pkit.style import style
+from pbox.tty import stdout_width
+from pbox.style import style
 
 
 # -------------------------------------------------------------------
@@ -95,8 +95,6 @@ ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 # -------------------------------------------------------------------
 # Renderer helpers
 # -------------------------------------------------------------------
-
-from pkit.style import style
 
 MAX_COL_WIDTH = 40
 

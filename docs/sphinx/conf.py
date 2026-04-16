@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
-# Sphinx configuration — pkit
-# Rendering only (content produced by pkit)
+# Sphinx configuration — pbox
+# Rendering only (content produced by pbox)
 # ---------------------------------------------------------------------------
 
 from __future__ import annotations
@@ -10,7 +10,7 @@ from datetime import datetime
 # Project metadata
 # ---------------------------------------------------------------------------
 
-project = "pkit"
+project = "pbox"
 author = "John Fogelin"
 copyright = f"{datetime.now().year}, {author}"
 
@@ -51,7 +51,7 @@ graphviz_dot_args = [
 html_theme = "furo"
 
 html_static_path = ["_static"]
-html_logo = "_static/pkit.png"
+html_logo = "_static/pbox.png"
 html_title = f"{project} {release}"
 
 html_theme_options = {
@@ -76,7 +76,7 @@ latex_elements = {
 \centering
 \vspace*{3cm}
 
-{\Huge\bfseries pkit\par}
+{\Huge\bfseries pbox\par}
 \vspace{0.5cm}
 {\Large A Python project CLI\par}
 
@@ -115,7 +115,7 @@ latex_elements[
 """
 
 latex_documents = [
-    ("index", "pkit.tex", "pkit Documentation", author, "manual"),
+    ("index", "pbox.tex", "pbox Documentation", author, "manual"),
 ]
 
 latex_toplevel_sectioning = "chapter"

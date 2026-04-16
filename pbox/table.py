@@ -1,5 +1,5 @@
 """
-pkit.table
+pbox.table
 
 Tabular data rendering utilities.
 
@@ -51,7 +51,7 @@ Optional explicit column ordering:
 - formatting is stable and diff-friendly
 
 Formatting concerns are intentionally separate from styling
-(see ``pkit.style``).
+(see ``pbox.style``).
 
 INTERNAL
 
@@ -64,7 +64,7 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable, Sequence
 
-from pkit.utils.tty import stdout_width
+from pbox.tty import stdout_width
 
 
 _WS_RE = re.compile(r"\s+")

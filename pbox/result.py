@@ -1,5 +1,5 @@
 """
-pkit.result
+pbox.result
 
 Result emission helpers.
 
@@ -40,7 +40,7 @@ Supported modes:
 [[result.usage]]
 Typical usage:
 
-    import pkit.result as result
+    import pbox.result as result
 
     result.configure(ResultContext(mode="nominal"))
     result.text("hello world")

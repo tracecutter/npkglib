@@ -3,18 +3,17 @@
 PROJECT_ROOT        := $(abspath ../..)
 DOCS_ROOT           := $(CURDIR)
 BUILD_ROOT          := $(DOCS_ROOT)/_build
-MANPAGE_BUILD_DIR   := $(BUILD_ROOT)/manpage
 DIST_ROOT           := $(PROJECT_ROOT)/pfig_dist
 SENTINEL            := pfig :: documentation rendered from source.
 
-.PHONY: all readme manpage sphinx sync publish publish-readme clean dist
+.PHONY: all readme sphinx sync publish publish-readme clean dist
 
 
 # ------------------------------------------------------------
 # Default build
 # ------------------------------------------------------------
 
-all: readme manpage
+all: readme
 
 
 # ------------------------------------------------------------
@@ -25,11 +24,6 @@ readme:
 	@echo "📘 Building README documentation..."
 	@cd $(PROJECT_ROOT) && \
 		pfig docs --force readme
-
-manpage:
-	@echo "📘 Building manpage documentation..."
-	@cd $(PROJECT_ROOT) && \
-		pfig docs --force manpage
 
 sphinx:
 	@echo "📘 Building Sphinx documentation (pfig projection)..."

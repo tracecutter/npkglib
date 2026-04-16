@@ -1,7 +1,7 @@
 """
-pkit.api
+pbox.api
 
-Declarative public API support for pkit.
+Declarative public API support for pbox.
 
 [[api.meta.title]]
 api
@@ -12,17 +12,17 @@ Decorator-based declaration of public API entities.
 [[api.description]]
 This module provides the public ``api`` decorator used to mark
 functions, classes, and other objects as part of the supported
-public surface of pkit.
+public surface of pbox.
 
 The decorator is backed by the lightweight registry implemented in
-``pkit._api``. It allows public interface declarations to remain
+``pbox._api``. It allows public interface declarations to remain
 close to the code they describe while staying dependency-light and
 safe to import broadly.
 
 [[api.usage]]
 Typical usage:
 
-    from pkit import api
+    from pbox import api
 
     @api()
     def my_function():
@@ -39,7 +39,7 @@ entities for downstream tooling:
 This module is the public facade for API declaration.
 
 Implementation details of registration and low-level registry
-management live in ``pkit._api``.
+management live in ``pbox._api``.
 
 Documentation tooling such as psym may later consume this registry
 to derive structured documentation symbols from declared API
@@ -53,6 +53,6 @@ INTERNAL
 
 from __future__ import annotations
 
-from pkit._api import api
+from pbox._api import api
 
 __all__ = ["api"]

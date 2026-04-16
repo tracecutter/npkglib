@@ -1,5 +1,5 @@
 """
-pkit.fmt
+pbox.fmt
 
 Formatting primitives.
 
@@ -33,7 +33,7 @@ Formatting is intentionally opinionated to reduce variability across tools.
 [[fmt.usage]]
 Typical usage:
 
-    from pkit import fmt
+    from pbox import fmt
 
     fmt.duration(1.234)
     fmt.number(0.5)
@@ -41,7 +41,7 @@ Typical usage:
 
 [[fmt.notes]]
 This module focuses purely on value formatting. Styling concerns
-(color, emphasis, layout) are handled separately by ``pkit.style``.
+(color, emphasis, layout) are handled separately by ``pbox.style``.
 
 INTERNAL
 

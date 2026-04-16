@@ -1,5 +1,5 @@
 """
-pkit.guppy
+pbox.guppy
 
 Minimal runtime event pipeline.
 
@@ -44,7 +44,7 @@ This keeps the system safe to import anywhere without side effects.
 [[guppy.usage]]
 Typical usage:
 
-    import pkit.guppy as guppy
+    import pbox.guppy as guppy
 
     guppy.bootstrap()
     guppy.post(EventMsg(stream="trace", name="start"))
@@ -58,7 +58,7 @@ This module is intentionally unopinionated about:
 - transport
 - formatting (delegated to sinks)
 
-Formatting helpers are provided via ``pkit.fmt``.
+Formatting helpers are provided via ``pbox.fmt``.
 
 INTERNAL
 
@@ -70,7 +70,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from collections.abc import Callable
-from pkit.utils import fmt
+from pbox import fmt
 import time
 
 

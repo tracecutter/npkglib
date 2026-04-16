@@ -1,5 +1,5 @@
 """
-docs.pfig.backends.readme
+docs.pbox.backends.readme
 
 Render the README.md documentation artifact.
 
@@ -12,8 +12,61 @@ INTERNAL
 from __future__ import annotations
 
 from pathlib import Path
+import importlib
+import pkgutil
 
+from pfig import symbol_add
 from pfig import Backend, BackendContext, RenderJob, Template
+
+
+def _discover_modules(pkg_name: str):
+    pkg = importlib.import_module(pkg_name)
+
+    if not hasattr(pkg, "__path__"):
+        return []
+
+    out = []
+
+    for mod in pkgutil.iter_modules(pkg.__path__):
+        name = mod.name
+
+        if name.startswith("_"):
+            continue
+
+        full = f"{pkg_name}.{name}"
+
+        try:
+            module = importlib.import_module(full)
+        except Exception:
+            continue
+
+        doc = (module.__doc__ or "").strip().splitlines()
+
+        summary = ""
+
+        if doc:
+            first = doc[0].strip()
+            if first != full:
+                summary = first
+
+        out.append({
+            "name": name,
+            "summary": summary,
+        })
+
+    return sorted(out, key=lambda x: x["name"])
+
+
+def _value_modules(mods: list[dict[str, str]]) -> str:
+    lines = []
+
+    for mod in mods:
+        if mod["summary"]:
+            lines.append(f"- **{mod['name']}** — {mod['summary']}")
+        else:
+            lines.append(f"- **{mod['name']}**")
+
+    return "\n".join(lines)
 
 
 class ReadmeBackend(Backend):
@@ -44,6 +97,13 @@ class ReadmeBackend(Backend):
     def build(self, ctx: BackendContext):
         template = Template.from_file(ctx.docs_root / "templates/readme.md.pf")
 
+        sym = ctx.symbols.get("project.name")
+        pkg_name = sym.value if sym else "pbox"
+
+        modules = _discover_modules(pkg_name)
+
+        symbol_add(ctx.symbols, "dynamic.modules", _value_modules(modules), origin="readme.symtab", fmt="md",)
+
         yield RenderJob(
             template=template,
             symbols=ctx.symbols,
@@ -57,7 +117,6 @@ class ReadmeBackend(Backend):
 PFIG_BACKEND = ReadmeBackend(
     requests=["project", "fs", "dynamic", "api"],
     code=[
-        Path("main.py"),
-        Path("core/d2d.py"),
+        Path("__init__.py"),
     ],
 )

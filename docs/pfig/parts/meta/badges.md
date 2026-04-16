@@ -1,4 +1,4 @@
-<a href="https://tracecutter.github.io/pkit/">
+<a href="https://tracecutter.github.io/pbox/">
 <img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Docs">
 </a>
 <img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="Python">

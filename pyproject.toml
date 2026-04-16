@@ -1,14 +1,13 @@
 [project]
-name = "pkit"
-version = "0.1.2"
-description = "pkit utility"
+name = "pbox"
+version = "0.1.0"
+description = "Reusable utility toolbox for npkg-based projects"
 authors = [
-  { name = "Bindar Dundat" }
+  { name = "John Fogelin" }
 ]
 readme = { file = "README.md", content-type = "text/markdown" }
-license = "MIT"
-license-files = ["LICENSE"]
-requires-python = ">=3.10"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
 
 classifiers = [
   "Programming Language :: Python :: 3",
@@ -19,45 +18,41 @@ classifiers = [
   "Topic :: Utilities"
 ]
 
-# NOTE:
-# Dependency versions in the sections below may be updated by `pfig restate`.
-# Upper bounds are conservative and should be reviewed periodically.
-
 dependencies = [
-    "click>=8.3.1",
     "tomlkit>=0.14.0",
-	# project configuration, docs, and lint
-	"pfig>=1.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     # docs
+	"pfig>=1.0.0",
     "sphinx<9.0,>=8.2.3",
     "myst-parser<5.0.0",
     "furo>=2025.12.19",
+
     # test
     "pytest>=9.0.2",
+
     # lint/style
     "ruff>=0.15.5",
     "black<26.0,>=25.12.0",
+
     # typing
     "mypy>=1.19.1",
+
     # distribution
     "build>=1.4.0",
-    # For versioned documentation on GitHub Pages, consider:
-    # mike >= 2.0,
 ]
 
 [project.scripts]
-pkit = "pkit.main:main"
+pbox = "pbox.__init__:__version__"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["pkit*"]
+include = ["pbox*"]
 
 [tool.setuptools.package-data]
-pkit = [
+pbox = [
     "_assets/**/*",
     "_assets/**/.*",
 ]
@@ -65,7 +60,7 @@ pkit = [
 [tool.ruff]
 target-version = "py311"
 lint.select = ["E", "F", "W", "B", "UP"]
-lint.ignore = ["E501"]  # ← line length is a human concern
+lint.ignore = ["E501"]
 
 [tool.black]
 line-length = 120 
@@ -85,6 +80,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.npkg]
+role = "package"
 type = "in-situ"
 
 [tool.pfig]
@@ -94,9 +90,3 @@ sysdeps = [
   "git>=2.0",
   "make>=4.0"
 ]
-
-[[tool.pkit.assets]]
-label = "manpage"
-share = "man"
-section = "man1"
-src = "docs/pfig/_build/manpage/man1"
