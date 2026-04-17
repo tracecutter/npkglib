@@ -151,7 +151,6 @@ $(INIT_STAMP):
 	fi
 
 	@touch $(INIT_STAMP)
-	@echo "✅ Initialization complete."
 
 init-git:
 	@if [ -d .git ]; then \
