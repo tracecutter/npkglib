@@ -1,40 +1,24 @@
 Getting Started
 ===============
 
-pkit is a Python CLI utiity powered by npkg.
+Install from source (development):
 
-Installation
-------------
+::
 
-.. code:: bash
+   pip install -e .
 
-   pip install pkit    # or pipx
+Or from a package index:
 
-Safe Exploration
-----------------
+::
 
-Most pkit commands support –dry-run, which shows what would change without modifying your project. When exploring, it’s a good idea to start with –dry-run until you’re comfortable with the results.
+   pip install pbox
 
-First Command
--------------
+pbox provides a collection of small, focused utilities that form the shared foundation of the npkg ecosystem.
 
-To start:
+It emphasizes:
 
-.. code:: bash
+- minimal dependencies
+- composable building blocks
+- consistent conventions across projects
 
-   pkit --help
-
-Sample Workflow
----------------
-
-A typical workflow might look like this:
-
-.. code:: bash
-
-   pkit sub
-   pkit help
-
-Next Steps
-----------
-
-See the User Guide for more detailed workflows.
+Rather than re-implementing common patterns, projects depend on pbox to supply a stable, reusable core.

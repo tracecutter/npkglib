@@ -1,29 +1,6 @@
 Getting Started
 ===============
 
-{{ code.section.quickstart.intro }}
-
-Installation
-------------
-
 {{ code.section.quickstart.install }}
 
-Safe Exploration
-----------------
-
-{{ code.section.quickstart.safety }}
-
-First Command
--------------
-
-{{ code.section.quickstart.first_command }}
-
-Sample Workflow
----------------
-
-{{ code.section.quickstart.workflow }}
-
-Next Steps
-----------
-
-{{ code.section.quickstart.next }}
+{{ code.section.overview }}

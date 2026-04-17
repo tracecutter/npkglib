@@ -19,6 +19,11 @@ from pfig import symbol_add
 from pfig import Backend, BackendContext, RenderJob, Template
 
 
+# ---------------------------------------------------------------------------
+# Backend
+# ---------------------------------------------------------------------------
+
+
 def _discover_modules(pkg_name: str):
     pkg = importlib.import_module(pkg_name)
 
@@ -52,10 +57,12 @@ def _discover_modules(pkg_name: str):
             if first != full:
                 summary = first
 
-        out.append({
-            "name": name,
-            "summary": summary,
-        })
+        out.append(
+            {
+                "name": name,
+                "summary": summary,
+            }
+        )
 
     return sorted(out, key=lambda x: x["name"])
 
@@ -105,7 +112,13 @@ class ReadmeBackend(Backend):
 
         modules = _discover_modules(pkg_name)
 
-        symbol_add(ctx.symbols, "dynamic.modules", _value_modules(modules), origin="readme.symtab", fmt="md",)
+        symbol_add(
+            ctx.symbols,
+            "dynamic.modules",
+            _value_modules(modules),
+            origin="readme.symtab",
+            fmt="md",
+        )
 
         yield RenderJob(
             template=template,

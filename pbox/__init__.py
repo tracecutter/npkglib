@@ -3,10 +3,10 @@ pbox
 
 Curated utility toolbox for npkg-based projects.
 
-[[meta.title]]
+[[pkg.meta.title]]
 pbox
 
-[[meta.tagline]]
+[[pkg.meta.tagline]]
 A small, composable Python utility library for reuse across npkg projects.
 
 [[section.quickstart.install]]

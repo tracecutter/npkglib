@@ -2,12 +2,12 @@
    pfig :: documentation rendered from source.
    Do not edit this artifact directly.
 
-pkit
+pbox
 ====
 
-A Python project CLI utility base project powered by npkg.
+A small, composable Python utility library for reuse across npkg projects.
 
-.. image:: ../_static/pkit.png
+.. image:: ../_static/pbox.png
    :align: center
    :width: 200px
 

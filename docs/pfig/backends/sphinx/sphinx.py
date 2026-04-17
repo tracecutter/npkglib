@@ -12,14 +12,50 @@ INTERNAL
 from __future__ import annotations
 
 from pathlib import Path
+import importlib
+import pkgutil
 
 from pfig import Backend, BackendContext, RenderJob, Template
 from pfig import symbol_add
+from pfig import symbols_code_extract
 
 
 # ---------------------------------------------------------------------------
 # Backend
 # ---------------------------------------------------------------------------
+
+
+def _discover_modules(pkg_name: str):
+    pkg = importlib.import_module(pkg_name)
+
+    if not hasattr(pkg, "__path__"):
+        return []
+
+    out = []
+
+    for mod in pkgutil.iter_modules(pkg.__path__):
+        name = mod.name
+        if name.startswith("_"):
+            continue
+
+        full = f"{pkg_name}.{name}"
+
+        try:
+            module = importlib.import_module(full)
+        except Exception:
+            continue
+
+        doc = (module.__doc__ or "").strip().splitlines()
+
+        summary = ""
+        if doc:
+            first = doc[0].strip()
+            if first != full:
+                summary = first
+
+        out.append((name, summary))
+
+    return sorted(out, key=lambda x: x[0])
 
 
 class SphinxBackend(Backend):
@@ -90,10 +126,25 @@ class SphinxBackend(Backend):
     # ------------------------------------------------------------------
 
     def build(self, ctx: BackendContext):
+        sym = ctx.symbols.get("project.name")
+        pkg_name = sym.value if sym else "pbox"
+
+        modules = _discover_modules(pkg_name)
+        module_names = [name for name, _ in modules]
         sections = self._discover_sections(ctx.docs_root)
+        toctree_modules = "\n".join(f"   {m}" for m in module_names)
+
+        lines = []
+        for name, summary in modules:
+            if summary:
+                lines.append(f"* **{name}** — {summary}")
+            else:
+                lines.append(f"* **{name}**")
 
         # ---- backend-owned symbol
         symbol_add(ctx.symbols, "dynamic.toctree", self._build_toctree(sections), origin="sphinx", fmt="rst")
+        symbol_add(ctx.symbols, "dynamic.toctree.modules", toctree_modules, origin="sphinx", fmt="rst")
+        symbol_add(ctx.symbols, "dynamic.modules", "\n".join(lines), origin="sphinx", fmt="rst")
 
         # ---- render each section
         base = ctx.docs_root / "templates/sphinx"
@@ -117,15 +168,57 @@ class SphinxBackend(Backend):
                 render_hooks=self,
             )
 
+        module_template = Template.from_file(ctx.docs_root / "templates/sphinx/03_reference/module.rst.pf")
+
+        for name, _ in modules:
+            symtab = ctx.symbols.clone()
+
+            pkg = importlib.import_module(pkg_name)
+            pkg_dir = Path(pkg.__file__).parent
+            module_path = pkg_dir / f"{name}.py"
+
+            # ------------------------------------------------------------
+            # extract module symbols (produces code.<module>.*)
+            # ------------------------------------------------------------
+            symbols_code_extract(symtab, [module_path])
+
+            # ------------------------------------------------------------
+            # project module scope: code.<module>.* → dynamic.code.*
+            # ------------------------------------------------------------
+            prefix = f"code.{name}."
+
+            for key, sym in list(symtab.items()):
+                if key.startswith(prefix):
+                    short = "dynamic.code." + key[len(prefix) :]
+
+                    value = getattr(sym, "value", sym)
+                    fmt = getattr(sym, "fmt", None)
+                    origin = getattr(sym, "origin", "sphinx")
+
+                    symbol_add(
+                        symtab,
+                        short,
+                        value,
+                        fmt=fmt,
+                        origin=f"{origin} (projected)",
+                    )
+
+            yield RenderJob(
+                template=module_template,
+                symbols=symtab,
+                output_path=Path(f"sphinx/03_reference/{name}.rst"),
+                fmt="rst",
+                render_hooks=self,
+            )
+
 
 # ---------------------------------------------------------------------------
 # Announcement
 # ---------------------------------------------------------------------------
 
 PFIG_BACKEND = SphinxBackend(
-    requests=["project", "fs", "dynamic", "api"],
+    requests=["project", "fs", "dynamic"],
     code=[
-        Path("main.py"),
-        Path("core/d2d.py"),
+        Path("__init__.py"),
     ],
 )

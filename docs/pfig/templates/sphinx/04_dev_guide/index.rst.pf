@@ -1,36 +1,9 @@
 Developer Guide
 ===============
 
-Contributing to {{ code.meta.title }}.
+Contributing to {{ code.pkg.meta.title }}.
 
 Overview
 --------
 
-{{ code.d2d.summary }}
-
-{{ code.d2d.overview }}
-
-Manifest
---------
-
-{{ code.d2d.manifest }}
-
-Routes
-------
-
-{{ code.d2d.routes }}
-
-Delivery
---------
-
-{{ code.d2d.delivery }}
-
-Integration
------------
-
-{{ code.d2d.integration }}
-
-Environment
------------
-
-{{ code.d2d.environment }}
+{{ code.section.overview }}

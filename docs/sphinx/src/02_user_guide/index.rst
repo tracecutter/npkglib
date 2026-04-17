@@ -1,24 +1,28 @@
 User Guide
 ==========
 
-Using pkit effectively.
+pbox provides a collection of small, focused utilities that form the shared foundation of the npkg ecosystem.
 
-For the full user guide, design notes, and rationale, see:
+It emphasizes:
 
-https://tracecutter.github.io/npkg/
+- minimal dependencies
+- composable building blocks
+- consistent conventions across projects
 
-Built with Sphinx and hosted on GitHub Pages.
+Rather than re-implementing common patterns, projects depend on pbox to supply a stable, reusable core.
 
-Status
-------
+Modules
+-------
 
-- Python 3.11+
-- Click-based CLI
-- Proprietary license
+* **api**
+* **diff**
+* **exceptions**
+* **fmt**
+* **guppy**
+* **mark**
+* **result**
+* **signal**
+* **style**
+* **table**
+* **tty**
 
-Links
------
-
-- Docs: https://tracecutter.github.io/pkit/
-- GitHub: https://github.com/tracecutter/pkit
-- Author: https://github.com/tracecutter

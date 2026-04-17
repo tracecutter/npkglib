@@ -2,12 +2,12 @@
    pfig :: documentation rendered from source.
    Do not edit this artifact directly.
 
-pkit
+pbox
 ====
 
-{{ code.meta.tagline }}
+{{ code.pkg.meta.tagline }}
 
-.. image:: ../_static/pkit.png
+.. image:: ../_static/pbox.png
    :align: center
    :width: 200px
 

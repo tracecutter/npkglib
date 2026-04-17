@@ -2,9 +2,9 @@
 pfig :: documentation rendered from source.
 Do not edit this artifact directly.
 -->
-# {{ code.meta.title }}
+# {{ code.pkg.meta.title }}
 
-**{{ code.meta.tagline }}**
+**{{ code.pkg.meta.tagline }}**
 
 <p align="center">
   <img src="docs/pfig/assets/pbox.png" width="180" alt="pbox logo">

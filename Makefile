@@ -376,7 +376,7 @@ docs-%:
 
 # MANPATH modification if venv hook not added by init (not run)
 manpath:
-	@echo "export MANPATH=\"$(CURDIR)/docs/pfig/_build/manpage:$$(manpath)\""
+	@echo "export MANPATH=\"$(CURDIR)/docs/pfig/_build/manpage:$$HOME/.local/share/man:$$(manpath)\""
 
 # ------------------------------------------------------------
 #  📦 Build Python distribution

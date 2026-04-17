@@ -1,7 +1,7 @@
 Reference
 =========
 
-Command and option reference.
+.. toctree::
+   :maxdepth: 1
 
-{{ dynamic.cli.help.root }}
-
+{{ dynamic.toctree.modules }}
