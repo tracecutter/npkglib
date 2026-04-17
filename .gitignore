@@ -19,8 +19,8 @@ __pycache__/
 .Python
 build/
 dist/
-# pfig cargo (build artifact)
-pfig/_assets/
+# d2d cargo (build artifact)
+*/_assets/
 *.egg-info/
 .eggs/
 wheels/

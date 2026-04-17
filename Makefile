@@ -459,32 +459,38 @@ release: release-guard preflight
 	@echo "🚀 Releasing $(PROJECT_NAME) $(VERSION)…"
 
 	@# --------------------------------------------------------
-	@# Ensure tag matches HEAD (idempotent but safe)
+	@# Ensure clean working tree
 	@# --------------------------------------------------------
-	@if git tag --list "v$(VERSION)" | grep -q .; then \
-		TAG_COMMIT=$$(git rev-list -n 1 v$(VERSION)); \
-		HEAD_COMMIT=$$(git rev-parse HEAD); \
-		if [ "$$TAG_COMMIT" != "$$HEAD_COMMIT" ]; then \
-			echo "❌ Tag v$(VERSION) already exists and points to a different commit"; \
-			echo "   Tag:  $$TAG_COMMIT"; \
-			echo "   HEAD: $$HEAD_COMMIT"; \
-			echo ""; \
-			echo "💡 You probably want to bump the version:"; \
-			echo "   pfig bump patch|minor|major"; \
-			exit 1; \
-		else \
-			echo "ℹ️ Tag v$(VERSION) matches HEAD"; \
-		fi; \
-	else \
-		echo "🏷️ Creating tag v$(VERSION)…"; \
-		git tag -a v$(VERSION) -m "Release v$(VERSION)"; \
+	@if ! git diff --quiet || ! git diff --cached --quiet; then \
+		echo "❌ Working tree is dirty"; \
+		echo "   Commit or stash changes before releasing."; \
+		exit 1; \
 	fi
 
 	@# --------------------------------------------------------
-	@# Push code + tags (safe to repeat)
+	@# Ensure tag does NOT already exist
 	@# --------------------------------------------------------
-	@echo "📤 Pushing main + v$(VERSION)…"
+	@if git tag --list "v$(VERSION)" | grep -q .; then \
+		echo "❌ Tag v$(VERSION) already exists"; \
+		echo ""; \
+		echo "💡 You probably want to bump the version:"; \
+		echo "   pfig bump patch|minor|major"; \
+		exit 1; \
+	fi
+
+	@# --------------------------------------------------------
+	@# Push code first (must succeed before tagging)
+	@# --------------------------------------------------------
+	@echo "📤 Pushing main…"
 	@git push origin main
+
+	@# --------------------------------------------------------
+	@# Create tag ONLY after everything is good
+	@# --------------------------------------------------------
+	@echo "🏷️ Creating tag v$(VERSION)…"
+	@git tag -a v$(VERSION) -m "Release v$(VERSION)"
+
+	@echo "📤 Pushing tag…"
 	@git push origin v$(VERSION)
 
 	@# --------------------------------------------------------
