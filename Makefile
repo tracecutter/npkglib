@@ -46,16 +46,21 @@ INIT_STAMP			= .init_stamp
 # 🔒 Development safety checks
 # ------------------------------------------------------------
 
+# expected venv = current directory name
+EXPECTED_VENV := $(notdir $(CURDIR))
+
 define ensure-venv-active
 	@if [ -z "$${VIRTUAL_ENV}" ]; then \
 		echo "❌ ERROR: No virtualenv active."; \
+		echo "   Expected: $(EXPECTED_VENV)"; \
 		exit 1; \
 	fi
 endef
 
 define ensure-correct-venv
-	@if [ "$(PROJECT_NAME)" != "$$(basename $$VIRTUAL_ENV)" ]; then \
-		echo "❌ ERROR: Wrong virtualenv active: $$(basename $$VIRTUAL_ENV). Expected: $(PROJECT_NAME)"; \
+	@if [ "$(EXPECTED_VENV)" != "$$(basename $$VIRTUAL_ENV)" ]; then \
+		echo "❌ ERROR: Wrong virtualenv active: $$(basename $$VIRTUAL_ENV)"; \
+		echo "   Expected: $(EXPECTED_VENV)"; \
 		exit 1; \
 	fi
 endef
