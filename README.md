@@ -52,17 +52,17 @@ Or from a package index:
 
 ## Modules 
 
-- **api**
-- **diff**
-- **exceptions**
-- **fmt**
-- **guppy**
-- **mark**
-- **result**
-- **signal**
-- **style**
-- **table**
-- **tty**
+- **api** — Declarative public API support for pbox.
+- **diff** — Diff / delta detection and rendering utilities.
+- **exceptions** — Core exception types for pbox.
+- **fmt** — Formatting primitives.
+- **guppy** — Minimal runtime event pipeline.
+- **mark** — Message emission and presentation helpers.
+- **result** — Result emission helpers.
+- **signal** — Runtime signalling primitives.
+- **style** — Styling primitives and presentation policy.
+- **table** — Tabular data rendering utilities.
+- **tty** — Terminal environment helpers.
 
 ---
 

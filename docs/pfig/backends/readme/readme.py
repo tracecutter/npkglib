@@ -44,7 +44,10 @@ def _discover_modules(pkg_name: str):
 
         summary = ""
 
-        if doc:
+        if len(doc) >= 3:
+            summary = doc[2].strip()
+        elif len(doc) >= 1:
+            # fallback (just in case someone breaks convention)
             first = doc[0].strip()
             if first != full:
                 summary = first
