@@ -488,23 +488,12 @@ release: release-guard preflight
 		branch=$$(git rev-parse --abbrev-ref HEAD); \
 		version="$(VERSION)"; \
 		\
-		# --------------------------------------------------------
-		# Validate branch (no detached HEAD)
-		# --------------------------------------------------------
 		[ -n "$$branch" ] && [ "$$branch" != "HEAD" ] || { \
 			echo "❌ Cannot release from detached HEAD"; exit 1; }; \
 		\
-		# --------------------------------------------------------
-		# Enforce leaf-only rule (no namespace parents)
-		# --------------------------------------------------------
 		git for-each-ref --format='%(refname:short)' refs/heads | grep -q "^$$branch/" && { \
 			echo "❌ Branch '$$branch' has children; cannot release from namespace"; exit 1; }; \
 		\
-		# --------------------------------------------------------
-		# Compute tag
-		#   main      → vX.Y.Z
-		#   <branch>  → <branch>/vX.Y.Z
-		# --------------------------------------------------------
 		if [ "$$branch" = "main" ]; then \
 			tag="v$$version"; \
 		else \
@@ -513,9 +502,6 @@ release: release-guard preflight
 		\
 		echo "🌿 $$branch → 🏷️ $$tag"; \
 		\
-		# --------------------------------------------------------
-		# Ensure tag does NOT already exist
-		# --------------------------------------------------------
 		if git rev-parse "$$tag" >/dev/null 2>&1; then \
 			echo "❌ Tag $$tag already exists"; \
 			echo ""; \
@@ -524,15 +510,9 @@ release: release-guard preflight
 			exit 1; \
 		fi; \
 		\
-		# --------------------------------------------------------
-		# Push branch first (must succeed before tagging)
-		# --------------------------------------------------------
 		echo "📤 Pushing $$branch…"; \
 		git push origin "$$branch"; \
 		\
-		# --------------------------------------------------------
-		# Create and push tag
-		# --------------------------------------------------------
 		echo "🏷️ Creating $$tag…"; \
 		git tag -a "$$tag" -m "Release $$tag"; \
 		\
