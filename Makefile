@@ -21,6 +21,10 @@ endif
 export VERSION		:= $(shell pfig get -k project.version 2>/dev/null)
 export PROJECT_NAME	:= $(shell pfig get -k project.name 2>/dev/null)
 
+# git tag state
+BRANCH				:= $(shell git rev-parse --abbrev-ref HEAD)
+TAG					:= $(if $(filter main,$(BRANCH)),v$(VERSION),$(BRANCH)/v$(VERSION))
+
 # Project metadata
 DOCS_ROOT			:= $(shell pfig get -k tool.pfig.docs-dir 2>/dev/null)
 DOCS_ROOT			?= docs
@@ -470,6 +474,8 @@ validate-npkg:
 	fi
 
 status:
+	@echo "BRANCH=$(BRANCH)"
+	@echo "TAG=$(TAG)"
 	@echo "NPKG_ROLE=$(NPKG_ROLE)"
 	@echo "NPKG_TYPE=$(NPKG_TYPE)"
 	@echo "IS_TOOL=$(IS_TOOL)"
@@ -483,42 +489,41 @@ status:
 
 release: release-guard preflight
 	@echo "🚀 Releasing $(PROJECT_NAME) $(VERSION)…"
+	@echo "🌿 $(BRANCH) → 🏷️ $(TAG)"
 
-	@{ \
-		branch=$$(git rev-parse --abbrev-ref HEAD); \
-		version="$(VERSION)"; \
-		\
-		[ -n "$$branch" ] && [ "$$branch" != "HEAD" ] || { \
-			echo "❌ Cannot release from detached HEAD"; exit 1; }; \
-		\
-		git for-each-ref --format='%(refname:short)' refs/heads | grep -q "^$$branch/" && { \
-			echo "❌ Branch '$$branch' has children; cannot release from namespace"; exit 1; }; \
-		\
-		if [ "$$branch" = "main" ]; then \
-			tag="v$$version"; \
-		else \
-			tag="$$branch/v$$version"; \
-		fi; \
-		\
-		echo "🌿 $$branch → 🏷️ $$tag"; \
-		\
-		if git rev-parse "$$tag" >/dev/null 2>&1; then \
-			echo "❌ Tag $$tag already exists"; \
-			echo ""; \
-			echo "💡 You probably want to bump the version:"; \
-			echo "   pfig bump patch|minor|major"; \
-			exit 1; \
-		fi; \
-		\
-		echo "📤 Pushing $$branch…"; \
-		git push origin "$$branch"; \
-		\
-		echo "🏷️ Creating $$tag…"; \
-		git tag -a "$$tag" -m "Release $$tag"; \
-		\
-		echo "📤 Pushing tag…"; \
-		git push origin "$$tag"; \
-	}
+	@# --------------------------------------------------------
+	@# Ensure branch is not a namespace parent
+	@# --------------------------------------------------------
+	@if git for-each-ref --format='%(refname:short)' refs/heads | grep -q "^$(BRANCH)/"; then \
+		echo "❌ Branch '$(BRANCH)' has children; cannot release from namespace"; \
+		exit 1; \
+	fi
+
+	@# --------------------------------------------------------
+	@# Ensure tag does NOT already exist
+	@# --------------------------------------------------------
+	@if git rev-parse "$(TAG)" >/dev/null 2>&1; then \
+		echo "❌ Tag $(TAG) already exists"; \
+		echo ""; \
+		echo "💡 You probably want to bump the version:"; \
+		echo "   pfig bump patch|minor|major"; \
+		exit 1; \
+	fi
+
+	@# --------------------------------------------------------
+	@# Push branch first (must succeed before tagging)
+	@# --------------------------------------------------------
+	@echo "📤 Pushing $(BRANCH)…"
+	@git push origin "$(BRANCH)"
+
+	@# --------------------------------------------------------
+	@# Create and push tag
+	@# --------------------------------------------------------
+	@echo "🏷️ Creating $(TAG)…"
+	@git tag -a "$(TAG)" -m "Release $(TAG)"
+
+	@echo "📤 Pushing tag…"
+	@git push origin "$(TAG)"
 
 	@# --------------------------------------------------------
 	@# Warn if GitHub Pages not configured (non-fatal)
