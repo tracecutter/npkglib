@@ -7,6 +7,7 @@ INTERNAL
 :license: PROPRIETARY, see LICENSE for details.
 """
 
+
 def test_version():
     import pbox
 

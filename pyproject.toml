@@ -44,9 +44,6 @@ dev = [
     "build>=1.4.0",
 ]
 
-[project.scripts]
-pbox = "pbox.__init__:__version__"
-
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["pbox*"]
