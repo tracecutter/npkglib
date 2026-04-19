@@ -71,5 +71,6 @@ __all__ = [
     "signal",
     "style",
     "table",
+    "toml_io",
     "tty",
 ]
