@@ -62,6 +62,7 @@ Or from a package index:
 - **signal** — Runtime signalling primitives.
 - **style** — Styling primitives and presentation policy.
 - **table** — Tabular data rendering utilities.
+- **toml_io** — TOML document I/O and navigation utilities.
 - **tty** — Terminal environment helpers.
 
 ---

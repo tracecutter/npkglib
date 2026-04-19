@@ -36,7 +36,7 @@ or validate configuration semantics.
 [[toml_io.usage]]
 Typical usage:
 
-```code
+```python
     from pbox import toml_io as toml
 
     doc = toml.load(path)

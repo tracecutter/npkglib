@@ -24,5 +24,6 @@ Modules
 * **signal**
 * **style**
 * **table**
+* **toml_io**
 * **tty**
 
