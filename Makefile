@@ -559,6 +559,10 @@ release: release-guard preflight
 pub-docs:
 	$(call ensure-venv-active)
 	$(call ensure-correct-venv)
+	@if [ "$(BRANCH)" != "main" ]; then \
+		echo "❌ pub-docs only allowed from canonical branch (main)"; \
+		exit 1; \
+	fi
 	@echo "🌐 Publishing documentation tools..."
 	@for tool in $(DOCS_TOOLS); do \
 		$(MAKE) docs-$$tool-publish; \
