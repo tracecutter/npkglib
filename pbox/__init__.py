@@ -54,7 +54,7 @@ by documentation tooling to extract structured symbols.
 from importlib.metadata import PackageNotFoundError, version
 
 from ._api import api
-from . import diff, fmt, guppy, mark, result, signal, style, table, tty
+from . import diff, fmt, guppy, mark, result, signal, style, table, toml_io, tty
 
 try:
     __version__ = version("pbox")
