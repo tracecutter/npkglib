@@ -69,6 +69,7 @@ def semver_bump(v: str, level: str) -> str:
 
     return f"{major}.{minor}.{patch}"
 
+
 def semver_validate(v: str) -> bool:
     """
     Return True if v is a valid MAJOR.MINOR.PATCH semantic version.
@@ -86,12 +87,7 @@ def semver_validate(v: str) -> bool:
         return False
 
     # reject pre/post/dev/local (e.g. 1.2.3rc1, 1.2.3+abc)
-    if (
-        parsed.pre is not None
-        or parsed.post is not None
-        or parsed.dev is not None
-        or parsed.local is not None
-    ):
+    if parsed.pre is not None or parsed.post is not None or parsed.dev is not None or parsed.local is not None:
         return False
 
     return True

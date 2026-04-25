@@ -1,6 +1,6 @@
 [project]
 name = "pbox"
-version = "0.2.2"
+version = "0.3.0"
 description = "Reusable utility toolbox for npkg-based projects"
 authors = [
   { name = "John Fogelin" }
