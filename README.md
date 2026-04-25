@@ -64,6 +64,7 @@ Or from a package index:
 - **table** — Tabular data rendering utilities.
 - **toml_io** — TOML document I/O and navigation utilities.
 - **tty** — Terminal environment helpers.
+- **version** — Minimal semantic version utilities.
 
 ---
 

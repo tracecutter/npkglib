@@ -16,3 +16,4 @@ Reference
    table
    toml_io
    tty
+   version

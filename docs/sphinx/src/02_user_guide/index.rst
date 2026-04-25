@@ -26,4 +26,5 @@ Modules
 * **table**
 * **toml_io**
 * **tty**
+* **version**
 
