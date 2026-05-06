@@ -26,8 +26,7 @@ BRANCH				:= $(shell git rev-parse --abbrev-ref HEAD)
 TAG					:= $(if $(filter main,$(BRANCH)),v$(VERSION),$(BRANCH)/v$(VERSION))
 
 # Project metadata
-DOCS_ROOT			:= $(shell pfig get -k tool.pfig.docs-dir 2>/dev/null)
-DOCS_ROOT			?= docs
+DOCS_ROOT			:= $(or $(shell pfig get -k tool.pfig.docs-dir 2>/dev/null),docs)
 
 DOCS_TOOLS			:= $(filter-out __%,$(notdir $(patsubst %/,%,$(wildcard docs/*/))))
 ASSETS_DIR			:= $(PROJECT_NAME)/_assets
