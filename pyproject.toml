@@ -26,6 +26,7 @@ dependencies = [
 dev = [
     # docs
 	"pfig>=1.0.0",
+	"psym>=1.0.0",
     "sphinx<9.0,>=8.2.3",
     "myst-parser<5.0.0",
     "furo>=2025.12.19",
