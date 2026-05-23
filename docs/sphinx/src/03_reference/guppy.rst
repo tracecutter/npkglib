@@ -16,7 +16,7 @@ Typical usage:
 
 ::
 
-   import pbox.guppy as guppy
+   import npkglib.guppy as guppy
 
    guppy.bootstrap()
    guppy.post(EventMsg(stream="trace", name="start"))
@@ -29,4 +29,4 @@ This module is intentionally unopinionated about:
 - transport
 - formatting (delegated to sinks)
 
-Formatting helpers are provided via ``pbox.fmt``.
+Formatting helpers are provided via ``npkglib.fmt``.

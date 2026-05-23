@@ -6,7 +6,7 @@
 #   - Emit outputs under docs/sphinx/_build/
 #
 # Non-responsibilities:
-#   - Generating documentation sources (handled externally, e.g. pfig)
+#   - Generating documentation sources (handled externally, e.g. psym)
 #   - Publishing or installation
 # ---------------------------------------------------------------------------
 
@@ -23,11 +23,11 @@ SPHINX_ROOT  := .
 SOURCEDIR    := src
 BUILDDIR     := _build
 
-# Auto-detect upstream (e.g. docs/pfig/_build/sphinx)
+# Auto-detect upstream (e.g. docs/psym/_build/sphinx)
 # If not present, operate in standalone mode
 SPHINX_UPSTREAM ?=
-ifneq ("$(wildcard $(PROJECT_ROOT)/docs/pfig/_build/sphinx)","")
-SPHINX_UPSTREAM := $(PROJECT_ROOT)/docs/pfig/_build/sphinx
+ifneq ("$(wildcard $(PROJECT_ROOT)/docs/psym/_build/sphinx)","")
+SPHINX_UPSTREAM := $(PROJECT_ROOT)/docs/psym/_build/sphinx
 endif
 
 # ------------------------------------------------------------
@@ -57,27 +57,27 @@ endif
 all: html
 
 # ------------------------------------------------------------
-# Sync using pfig (if present) to build sphinx projection
+# Sync using psym (if present) to build sphinx projection
 # ------------------------------------------------------------
 
 sync:
 	@echo "ℹ️  Repo in sync for sphinx docs."
 
 pull-upstream:
-	@if [ -d "$(PROJECT_ROOT)/docs/pfig" ] && [ -f "$(PROJECT_ROOT)/docs/pfig/Makefile" ]; then \
-		echo "🔄 Sync (sphinx): building projection via docs/pfig…"; \
-		$(MAKE) -C $(PROJECT_ROOT)/docs/pfig --no-print-directory sphinx; \
+	@if [ -d "$(PROJECT_ROOT)/docs/psym" ] && [ -f "$(PROJECT_ROOT)/docs/psym/Makefile" ]; then \
+		echo "🔄 Sync (sphinx): building projection via docs/psym…"; \
+		$(MAKE) -C $(PROJECT_ROOT)/docs/psym --no-print-directory sphinx; \
 	fi; \
 	\
-	if [ -d "$(PROJECT_ROOT)/docs/pfig/_build/sphinx" ]; then \
+	if [ -d "$(PROJECT_ROOT)/docs/psym/_build/sphinx" ]; then \
 		echo "📥 Sync (sphinx): preparing to copy projection into $(SOURCEDIR)…"; \
-		if [ -z "$$(ls -A $(PROJECT_ROOT)/docs/pfig/_build/sphinx 2>/dev/null)" ]; then \
+		if [ -z "$$(ls -A $(PROJECT_ROOT)/docs/psym/_build/sphinx 2>/dev/null)" ]; then \
 			echo "❌ Upstream source exists but is empty — refusing to sync"; \
 			exit 1; \
 		fi; \
 		echo "📥 Sync (sphinx): copying projection into $(SOURCEDIR)…"; \
 		rsync -av --delete \
-			$(PROJECT_ROOT)/docs/pfig/_build/sphinx/ \
+			$(PROJECT_ROOT)/docs/psym/_build/sphinx/ \
 			$(SOURCEDIR)/; \
 	else \
 		echo "ℹ️  No upstream source projection (using local sources in $(SOURCEDIR)/)"; \
@@ -153,7 +153,7 @@ clean:
 
 help:
 	@echo "Sphinx sources are located under src/."
-	@echo "They may be generated externally (e.g. by pfig) or edited directly."
+	@echo "They may be generated externally (e.g. by psym) or edited directly."
 	@echo ""
 	@echo "Sphinx build targets:"
 	@echo "  html         Build HTML documentation (default)"

@@ -1,0 +1,67 @@
+<!--
+psym :: documentation rendered from source.
+Do not edit this artifact directly.
+-->
+# {{ code.pkg.meta.title }}
+
+**{{ code.pkg.meta.tagline }}**
+
+<p align="center">
+  <img src="docs/psym/assets/npkglib.png" width="180" alt="npkglib logo">
+</p>
+
+<p align="center">
+{{ fs.meta.badges }}
+</p>
+
+---
+
+<details>
+<summary><strong>Table of Contents</strong></summary>
+
+{{ dynamic.toc }}
+
+</details>
+
+---
+
+## Installation {{#toc.installation}}
+
+{{ code.section.quickstart.install }}
+
+---
+
+## Modules {{#toc.modules}}
+
+{{ dynamic.modules }}
+
+---
+
+## Overview {{#toc.overview}}
+
+{{ code.section.overview }}
+
+---
+
+## Usage {{#toc.usage}}
+
+{{ code.section.usage }}
+
+---
+
+## Development {{#toc.development}}
+
+{{ fs.parts.development }}
+
+---
+
+## Changelog {{#toc.changelog}}
+
+{{ fs.parts.changelog }}
+
+---
+
+## Links {{#toc.links}}
+
+{{ code.section.links }}
+

@@ -1,13 +1,13 @@
 ..
-   pfig :: documentation rendered from source.
+   psym :: documentation rendered from source.
    Do not edit this artifact directly.
 
-pbox
+npkglib
 ====
 
 A small, composable Python utility library for reuse across npkg projects.
 
-.. image:: ../_static/pbox.png
+.. image:: ../_static/npkglib.png
    :align: center
    :width: 200px
 

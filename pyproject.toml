@@ -1,6 +1,6 @@
 [project]
-name = "pbox"
-version = "0.3.0"
+name = "npkglib"
+version = "1.0.0"
 description = "Reusable utility toolbox for npkg-based projects"
 authors = [
   { name = "John Fogelin" }
@@ -47,10 +47,10 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["pbox*"]
+include = ["npkglib*"]
 
 [tool.setuptools.package-data]
-pbox = [
+npkglib = [
     "_assets/**/*",
     "_assets/**/.*",
 ]

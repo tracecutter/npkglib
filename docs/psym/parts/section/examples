@@ -1,0 +1,34 @@
+List declared dependencies:
+```bash
+psym deps
+```
+
+Add a runtime dependency:
+```bash
+psym add requests
+```
+
+Add a development dependency:
+```bash
+psym add --dev pytest
+```
+
+Bump the project version:
+```bash
+psym bump minor
+```
+
+Check project configuration and environment:
+```bash
+psym lint
+```
+
+Generate documentation artifacts:
+```bash
+psym docs
+```
+
+Inspect a specific field in pyproject.toml:
+```bash
+psym get project.version
+```

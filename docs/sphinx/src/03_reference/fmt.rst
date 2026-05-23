@@ -16,10 +16,10 @@ Typical usage:
 
 ::
 
-   from pbox import fmt
+   from npkglib import fmt
 
    fmt.duration(1.234)
    fmt.number(0.5)
    fmt.field("percent", 0.42)
 
-This module focuses purely on value formatting. Styling concerns (color, emphasis, layout) are handled separately by ``pbox.style``.
+This module focuses purely on value formatting. Styling concerns (color, emphasis, layout) are handled separately by ``npkglib.style``.

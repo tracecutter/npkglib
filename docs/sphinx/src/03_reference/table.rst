@@ -33,4 +33,4 @@ Optional explicit column ordering:
 - values are stringified without styling
 - formatting is stable and diff-friendly
 
-Formatting concerns are intentionally separate from styling (see ``pbox.style``).
+Formatting concerns are intentionally separate from styling (see ``npkglib.style``).

@@ -1,17 +1,17 @@
 <!--
-pfig :: documentation rendered from source.
+psym :: documentation rendered from source.
 Do not edit this artifact directly.
 -->
-# pbox
+# npkglib
 
 **A small, composable Python utility library for reuse across npkg projects.**
 
 <p align="center">
-  <img src="docs/pfig/assets/pbox.png" width="180" alt="pbox logo">
+  <img src="docs/psym/assets/npkglib.png" width="180" alt="npkglib logo">
 </p>
 
 <p align="center">
-<a href="https://tracecutter.github.io/pbox/">
+<a href="https://tracecutter.github.io/npkglib/">
 <img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue" alt="Docs">
 </a>
 <img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="Python">
@@ -46,15 +46,15 @@ Install from source (development):
 
 Or from a package index:
 
-    pip install pbox
+    pip install npkglib
 
 ---
 
 ## Modules 
 
-- **api** — Declarative public API support for pbox.
+- **api** — Declarative public API support for npkglib.
 - **diff** — Diff / delta detection and rendering utilities.
-- **exceptions** — Core exception types for pbox.
+- **exceptions** — Core exception types for npkglib.
 - **fmt** — Formatting primitives.
 - **guppy** — Minimal runtime event pipeline.
 - **mark** — Message emission and presentation helpers.
@@ -70,7 +70,7 @@ Or from a package index:
 
 ## Overview 
 
-pbox provides a collection of small, focused utilities that form the
+npkglib provides a collection of small, focused utilities that form the
 shared foundation of the npkg ecosystem.
 
 It emphasizes:
@@ -79,7 +79,7 @@ It emphasizes:
 - composable building blocks
 - consistent conventions across projects
 
-Rather than re-implementing common patterns, projects depend on pbox
+Rather than re-implementing common patterns, projects depend on npkglib
 to supply a stable, reusable core.
 
 ---
@@ -88,7 +88,7 @@ to supply a stable, reusable core.
 
 Import and use utilities directly:
 
-    from pbox import diff, table, tty
+    from npkglib import diff, table, tty
 
 Modules are designed to be independent and safe to use in isolation.
 
@@ -99,8 +99,8 @@ Modules are designed to be independent and safe to use in isolation.
 Clone and install in editable mode:
 
 ```bash
-git clone https://github.com/tracecutter/pbox.git
-cd pbox
+git clone https://github.com/tracecutter/npkglib.git
+cd npkglib
 make install
 ```
 
@@ -142,6 +142,6 @@ make readme
 
 ## Links 
 
-- GitHub: https://github.com/tracecutter/pbox
-- Documentation: https://tracecutter.github.io/pbox/
+- GitHub: https://github.com/tracecutter/npkglib
+- Documentation: https://tracecutter.github.io/npkglib/
 

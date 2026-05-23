@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
-# Sphinx configuration — pbox
-# Rendering only (content produced by pbox)
+# Sphinx configuration — npkglib
+# Rendering only (content produced by npkglib)
 # ---------------------------------------------------------------------------
 
 from __future__ import annotations
@@ -10,7 +10,7 @@ from datetime import datetime
 # Project metadata
 # ---------------------------------------------------------------------------
 
-project = "pbox"
+project = "npkglib"
 author = "John Fogelin"
 copyright = f"{datetime.now().year}, {author}"
 
@@ -51,7 +51,7 @@ graphviz_dot_args = [
 html_theme = "furo"
 
 html_static_path = ["_static"]
-html_logo = "_static/pbox.png"
+html_logo = "_static/npkglib.png"
 html_title = f"{project} {release}"
 
 html_theme_options = {
@@ -76,7 +76,7 @@ latex_elements = {
 \centering
 \vspace*{3cm}
 
-{\Huge\bfseries pbox\par}
+{\Huge\bfseries npkglib\par}
 \vspace{0.5cm}
 {\Large A Python project CLI\par}
 
@@ -115,7 +115,7 @@ latex_elements[
 """
 
 latex_documents = [
-    ("index", "pbox.tex", "pbox Documentation", author, "manual"),
+    ("index", "npkglib.tex", "npkglib Documentation", author, "manual"),
 ]
 
 latex_toplevel_sectioning = "chapter"

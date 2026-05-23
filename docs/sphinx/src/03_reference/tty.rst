@@ -11,15 +11,15 @@ Typical usage:
 
 ::
 
-   from pbox.tty import stdout_width
+   from npkglib.tty import stdout_width
 
    width = stdout_width()
 
 Used by rendering modules such as:
 
-- pbox.table
-- pbox.diff
-- pbox.mark
+- npkglib.table
+- npkglib.diff
+- npkglib.mark
 
 - non-TTY environments return an effectively unbounded width
 - fallback values ensure predictable formatting

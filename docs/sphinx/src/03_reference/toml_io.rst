@@ -16,7 +16,7 @@ Typical usage:
 
 .. code:: python
 
-       from pbox import toml_io as toml
+       from npkglib import toml_io as toml
 
        doc = toml.load(path)
        working_copy = toml.clone(doc)

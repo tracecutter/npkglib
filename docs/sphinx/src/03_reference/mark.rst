@@ -3,7 +3,7 @@ mark
 
 Context-aware message emission for CLI-style output.
 
-This module provides helpers for emitting user-facing messages with consistent formatting and behavior across pbox-based tools.
+This module provides helpers for emitting user-facing messages with consistent formatting and behavior across npkglib-based tools.
 
 It interprets presentation context (quiet, verbose, emoji) to decide when and how messages are emitted.
 
@@ -11,7 +11,7 @@ Typical usage:
 
 ::
 
-   import pbox.mark as mark
+   import npkglib.mark as mark
 
    mark.configure(mark.MarkContext(verbose=True))
 

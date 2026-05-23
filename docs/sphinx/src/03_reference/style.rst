@@ -3,7 +3,7 @@ style
 
 Centralized styling and presentation helpers.
 
-This module defines styling primitives used across pbox for consistent visual output.
+This module defines styling primitives used across npkglib for consistent visual output.
 
 It centralizes:
 
@@ -15,7 +15,7 @@ Typical usage:
 
 ::
 
-   from pbox.style import style
+   from npkglib.style import style
 
    style.insert("added line")
    style.delete("removed line")
@@ -27,6 +27,6 @@ Or for lower-level control:
 
    style.bg(style.BG_GREEN, "text")
 
-- styling is separate from formatting (see ``pbox.fmt``)
-- styling is separate from emission (see ``pbox.mark``)
+- styling is separate from formatting (see ``npkglib.fmt``)
+- styling is separate from emission (see ``npkglib.mark``)
 - this module is intentionally opinionated

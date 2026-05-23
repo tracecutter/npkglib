@@ -14,7 +14,7 @@ Typical usage:
 
 ::
 
-   import pbox.result as result
+   import npkglib.result as result
 
    result.configure(ResultContext(mode="nominal"))
    result.text("hello world")

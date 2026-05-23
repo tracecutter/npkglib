@@ -5,7 +5,7 @@ Lightweight runtime signalling and tracing helpers.
 
 This module provides primitives for emitting structured runtime signals with near-zero overhead when disabled.
 
-Signals represent occurrences within a program but perform no routing themselves. They are translated into events and forwarded to the ``pbox.guppy`` event pipeline.
+Signals represent occurrences within a program but perform no routing themselves. They are translated into events and forwarded to the ``npkglib.guppy`` event pipeline.
 
 Three primary usage patterns:
 
@@ -33,6 +33,6 @@ Class decorator (selected methods):
 
 - signals do not format output (handled by sinks)
 - signals do not persist data
-- signals are intended to compose with ``pbox.guppy``
+- signals are intended to compose with ``npkglib.guppy``
 
-This module forms the instrumentation layer of pbox.
+This module forms the instrumentation layer of npkglib.

@@ -18,9 +18,9 @@ $(error ❌ pfig is required. Install via: pipx install pfig)
 endif
 
 # exported variables
-export VERSION		:= $(shell pfig get -k project.version 2>/dev/null)
-export PROJECT_NAME	:= $(shell pfig get -k project.name 2>/dev/null)
-export DIST_NAME	?= $(PROJECT_NAME)
+export PROJECT_NAME	:= $(shell pfig get -N 2>/dev/null)
+export VERSION		:= $(shell pfig get -V 2>/dev/null)
+export DIST_NAME	:= $(shell pfig get -D 2>/dev/null)
 
 # git tag state
 BRANCH				:= $(shell git rev-parse --abbrev-ref HEAD)

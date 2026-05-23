@@ -1,12 +1,12 @@
 Developer Guide
 ===============
 
-Contributing to pbox.
+Contributing to npkglib.
 
 Overview
 --------
 
-pbox provides a collection of small, focused utilities that form the shared foundation of the npkg ecosystem.
+npkglib provides a collection of small, focused utilities that form the shared foundation of the npkg ecosystem.
 
 It emphasizes:
 
@@ -14,4 +14,4 @@ It emphasizes:
 - composable building blocks
 - consistent conventions across projects
 
-Rather than re-implementing common patterns, projects depend on pbox to supply a stable, reusable core.
+Rather than re-implementing common patterns, projects depend on npkglib to supply a stable, reusable core.

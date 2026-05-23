@@ -1,5 +1,5 @@
 """
-pbox.tests.basic.test_basic
+npkglib.tests.basic.test_basic
 
 INTERNAL
 
@@ -9,6 +9,6 @@ INTERNAL
 
 
 def test_version():
-    import pbox
+    import npkglib
 
-    assert hasattr(pbox, "__version__")
+    assert hasattr(npkglib, "__version__")
