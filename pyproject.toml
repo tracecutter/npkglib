@@ -25,8 +25,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     # docs
-	"pfig>=1.0.0",
-	"psym>=1.0.0",
+	"npkg-pfig>=2.0.0",
+	"npkg-psym>=0.1.0",
     "sphinx<9.0,>=8.2.3",
     "myst-parser<5.0.0",
     "furo>=2025.12.19",
@@ -43,6 +43,7 @@ dev = [
 
     # distribution
     "build>=1.4.0",
+    "twine>=6.2",
 ]
 
 [tool.setuptools.packages.find]
@@ -81,7 +82,7 @@ build-backend = "setuptools.build_meta"
 role = "package"
 type = "in-situ"
 
-[tool.pfig]
+[tool.psym]
 docs-dir = "docs"
 
 sysdeps = [

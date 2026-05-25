@@ -27,7 +27,7 @@ BRANCH				:= $(shell git rev-parse --abbrev-ref HEAD)
 TAG					:= $(if $(filter main,$(BRANCH)),v$(VERSION),$(BRANCH)/v$(VERSION))
 
 # Project metadata
-DOCS_ROOT			:= $(or $(shell pfig get -k tool.pfig.docs-dir 2>/dev/null),docs)
+DOCS_ROOT			:= $(or $(shell pfig get key tool.psym.docs-dir 2>/dev/null),docs)
 
 DOCS_TOOLS			:= $(filter-out __%,$(notdir $(patsubst %/,%,$(wildcard docs/*/))))
 ASSETS_DIR			:= $(PROJECT_NAME)/_assets
@@ -36,8 +36,8 @@ README_ROOT			:= README.md
 BREWREPO			:= homebrew-$(PROJECT_NAME)
 
 # Does this project need to be executed in-situ within target project?
-NPKG_TYPE			:= $(or $(shell pfig get -k tool.npkg.type 2>/dev/null),external)
-NPKG_ROLE			:= $(or $(shell pfig get -k tool.npkg.role 2>/dev/null),tool)
+NPKG_TYPE			:= $(or $(shell pfig get key tool.npkg.type 2>/dev/null),external)
+NPKG_ROLE			:= $(or $(shell pfig get key tool.npkg.role 2>/dev/null),tool)
 
 IS_IN_SITU			:= $(if $(filter in-situ,$(NPKG_TYPE)),1,0)
 IS_EXTERNAL			:= $(if $(filter external,$(NPKG_TYPE)),1,0)
@@ -440,10 +440,10 @@ dist:
 
 	@echo "📜 Writing asset manifest…"
 	mkdir -p "$(PROJECT_NAME)/_assets"
-	pfig get -m > "$(PROJECT_NAME)/_assets/manifest.toml"
+	pfig get -M > "$(PROJECT_NAME)/_assets/manifest.toml"
 
 	@echo "📦 Staging assets…"
-	pfig get -l | while IFS=$$'\t' read -r src dst; do \
+	pfig get -L | while IFS=$$'\t' read -r src dst; do \
 		dst="$(PROJECT_NAME)/$$dst"; \
 		mkdir -p "$$(dirname "$$dst")"; \
 		cp "$$src" "$$dst"; \
@@ -464,11 +464,7 @@ dist:
 
 preflight: validate-npkg clean refresh docs docs-sync test check dist
 	@echo "🔍 Preflight: validating release readiness…"
-	@if [ "$(IS_TOOL)" = "1" ]; then \
-		pfig lint release; \
-	else \
-		echo "ℹ️ Skipping release-mode system lint (package project)"; \
-	fi
+	@pfig lint release
 	@echo "✅ Takeoff clearance granted for $(PROJECT_NAME) $(VERSION)"
 
 release-guard:
