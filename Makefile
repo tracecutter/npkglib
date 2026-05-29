@@ -4,7 +4,7 @@
 		check check-sys check-types check-readme check-lint check-style reformat \
 		test test-coverage test-all \
 		docs docs-% docs-%-% \
-		dist release unrelease publish \
+		dist release \
 		pub-docs pub-pypi pub-brew \
 		status corpus
 
@@ -105,8 +105,6 @@ help:
 	@echo "preflight - check everything is ready for release"
 	@echo "dist - generate full distribution and stage package for release."
 	@echo "release - tag, build, push, and perform local post-release install if applicable"
-	@echo "unrelease - remove local release from current environment and local installation (pipx)"
-	@echo "publish -  publish current release and documentation to GitHub for pip and brew install"
 	@echo "pub-docs - publish documents on GitHub.io"
 	@echo "pub-pypi - publish release on PyPi"
 	@echo "pub-brew - publish release on GitHub as homebrew tap"
@@ -548,23 +546,6 @@ release: release-guard preflight
 		echo "⚠️  GitHub Pages not configured."; \
 		echo "   Go to: Settings → Pages → set source to gh-pages branch."; \
 	}
-
-	@# --------------------------------------------------------
-	@# Local install via pipx (external tools only)
-	@# --------------------------------------------------------
-	@if [ "$(IS_TOOL)" = "1" ] && [ "$(IS_EXTERNAL)" = "1" ]; then \
-		WHEEL=$$(ls dist/*.whl 2>/dev/null | head -n 1); \
-		if [ -z "$$WHEEL" ]; then \
-			echo "❌ No wheel found in dist/"; \
-			exit 1; \
-		fi; \
-		echo "📦 Installing via pipx…"; \
-		pipx install --force "$$WHEEL" >/dev/null || { \
-			echo "❌ pipx install failed"; exit 1; \
-		}; \
-	else \
-		echo "ℹ️ Skipping pipx install"; \
-	fi
 
 	@echo "🎉 Local release complete for $(PROJECT_NAME) $(VERSION)"
 
