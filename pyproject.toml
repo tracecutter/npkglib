@@ -20,6 +20,7 @@ classifiers = [
 
 dependencies = [
     "tomlkit>=0.14.0",
+	"packaging>=26.2",
 ]
 
 [project.optional-dependencies]
