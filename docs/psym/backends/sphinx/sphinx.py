@@ -187,7 +187,7 @@ class SphinxBackend(Backend):
                     if not key.startswith(prefix):
                         continue
 
-                    short = "dynamic.code." + key[len(prefix):]
+                    short = "dynamic.code." + key[len(prefix) :]
 
                     # RST requires document titles to be followed by an underline
                     # of matching length. We special-case the projected module title here.
