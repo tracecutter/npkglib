@@ -1,5 +1,5 @@
 exceptions
-====================
+==========
 
 Base exception hierarchy for npkglib.
 

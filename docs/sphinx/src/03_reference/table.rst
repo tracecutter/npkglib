@@ -1,5 +1,5 @@
 table
-====================
+=====
 
 Lightweight tabular rendering with deterministic layout.
 

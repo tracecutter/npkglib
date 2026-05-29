@@ -53,8 +53,7 @@ by documentation tooling to extract structured symbols.
 
 from importlib.metadata import PackageNotFoundError, version
 
-from ._api import api
-from . import diff, fmt, guppy, mark, result, signal, style, table, toml_io, tty
+from . import api_gen, diff, fmt, guppy, mark, result, signal, style, table, toml_io, tty
 
 try:
     __version__ = version("npkglib")
@@ -62,7 +61,7 @@ except PackageNotFoundError:
     __version__ = "x.y.z"
 
 __all__ = [
-    "api",
+    "api_gen",
     "diff",
     "fmt",
     "guppy",

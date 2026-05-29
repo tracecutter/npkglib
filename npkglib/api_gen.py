@@ -1,34 +1,45 @@
 """
-npkglib._api
+npkglib.api_gen
 
-Bootstrap API decorator registry.
+Bootstrap semantic API decorator registry.
 
-[[_api.meta.title]]
-_api
+[[api_gen.meta.title]]
+api_gen
 
-[[_api.meta.tagline]]
-Minimal dependency-free API registry and decorator.
+[[api_gen.meta.tagline]]
+Dependency-free semantic API registry and decorator.
 
-[[_api.description]]
-This module provides the core ``api`` decorator used to declare public
-API entities within a package.
+[[api_gen.description]]
+This module provides the core ``api`` decorator used to declare
+semantic API entities within a package.
 
-It is intentionally designed to be dependency-free with respect to the
-rest of ``npkglib`` so that it can be safely imported from any module
-without introducing circular dependencies.
+Decorated objects may include:
+
+- functions
+- classes
+- exceptions
+- other public package entities
+
+The module is intentionally designed to remain dependency-free with
+respect to the rest of ``npkglib`` so that it may be safely imported
+from any package module without introducing circular dependencies.
 
 The decorator records annotated objects in a lightweight registry and
-optionally promotes them to the package namespace.
+optionally promotes them onto the owning package namespace.
 
-[[_api.design.constraints]]
+[[api_gen.design.constraints]]
 - must remain dependency-free (standard library only)
-- must not import higher-level modules (e.g. npkglib.api)
+- must not import higher-level modules
 - safe for broad import across package modules
 
-[[_api.usage]]
+[[api_gen.usage]]
 Typical usage:
 
-    from npkglib import api
+    from npkglib.api_gen import api
+
+    @api
+    def render_diff(...):
+        ...
 
     @api(group="backend")
     class Backend:
@@ -40,9 +51,9 @@ Decorated objects are:
 - optionally exported onto the package namespace
 - included in the package ``__all__``
 
-[[_api.notes]]
+[[api_gen.notes]]
 Higher-level tooling (e.g. psym) may inspect the registry to derive
-structured documentation or API references.
+structured documentation, semantic API references, or symbol tables.
 
 INTERNAL
 
@@ -67,7 +78,19 @@ class _API:
     def __init__(self) -> None:
         self._registry: list[tuple[Any, dict[str, Any]]] = []
 
-    def __call__(self, **meta) -> Callable:
+    def __call__(self, obj: Any | None = None, **meta: Any) -> Callable:
+        """
+        Decorate an object as part of the public API.  Supports forms:
+
+            @api
+            def foo():
+                ...
+
+            @api(group="backend")
+            def foo():
+                ...
+        """
+
         def decorator(obj: Any) -> Any:
             info = {
                 "name": obj.__name__,
@@ -78,6 +101,7 @@ class _API:
 
             self._registry.append((obj, info))
 
+            # Promote symbols onto the owning top-level package namespace.
             package = obj.__module__.split(".", 1)[0]
             pkg = sys.modules.get(package)
 
@@ -94,10 +118,18 @@ class _API:
 
             return obj
 
+        if obj is not None:
+            return decorator(obj)
+
         return decorator
 
     def discover(self, package: str) -> None:
-        """Import all modules in a package to trigger decorators."""
+        """
+        Import all modules in a package to trigger API decorators.
+
+        This allows downstream tooling (e.g. psym) to discover semantic
+        API declarations without requiring explicit module imports.
+        """
         root = importlib.import_module(package)
 
         if not hasattr(root, "__path__"):

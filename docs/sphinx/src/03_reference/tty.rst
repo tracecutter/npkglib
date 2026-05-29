@@ -1,5 +1,5 @@
 tty
-====================
+===
 
 Terminal-aware utilities for width and capability detection.
 

@@ -1,5 +1,5 @@
 style
-====================
+=====
 
 Centralized styling and presentation helpers.
 

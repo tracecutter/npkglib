@@ -4,7 +4,7 @@ Reference
 .. toctree::
    :maxdepth: 1
 
-   api
+   api_gen
    diff
    exceptions
    fmt

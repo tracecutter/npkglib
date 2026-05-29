@@ -52,7 +52,7 @@ Or from a package index:
 
 ## Modules 
 
-- **api** — Declarative public API support for npkglib.
+- **api_gen** — Bootstrap semantic API decorator registry.
 - **diff** — Diff / delta detection and rendering utilities.
 - **exceptions** — Core exception types for npkglib.
 - **fmt** — Formatting primitives.

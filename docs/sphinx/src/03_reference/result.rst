@@ -1,5 +1,5 @@
 result
-====================
+======
 
 Primary output channel for command results.
 

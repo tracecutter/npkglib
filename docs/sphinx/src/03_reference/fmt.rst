@@ -1,5 +1,5 @@
 fmt
-====================
+===
 
 Deterministic formatting utilities for presentation-ready values.
 

@@ -3,30 +3,30 @@ npkglib.version
 
 Minimal semantic version utilities.
 
-[[mark.meta.title]]
+[[version.meta.title]]
 Version utilities
 
-[[mark.meta.tagline]]
+[[version.meta.tagline]]
 Pure helpers for parsing and incrementing semantic version strings.
 
-[[mark.description]]
+[[version.description]]
 Provides small, reusable primitives for working with version strings.
 These functions operate purely on strings and raise standard exceptions
 on invalid input.
 
 No filesystem access, configuration, or project semantics are involved.
 
-[[mark.design]]
+[[version.design]]
 - Keep implementation minimal and explicit
 - Depend on packaging.Version for parsing
 - Avoid reimplementing version logic
 - No policy, only primitives
 
-[[mark.usage]]
+[[version.usage]]
 Used by tools such as pfig and pfix to update version identifiers in
 their respective configuration files.
 
-[[mark.notes]]
+[[version.notes]]
 This module does not enforce full semantic versioning rules. It assumes
 a simple MAJOR.MINOR.PATCH structure and ignores pre-release or build
 metadata.

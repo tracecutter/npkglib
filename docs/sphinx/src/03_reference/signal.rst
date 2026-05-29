@@ -1,5 +1,5 @@
 signal
-====================
+======
 
 Lightweight runtime signalling and tracing helpers.
 

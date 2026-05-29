@@ -1,5 +1,5 @@
 mark
-====================
+====
 
 Context-aware message emission for CLI-style output.
 

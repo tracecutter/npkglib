@@ -3,7 +3,7 @@
    Do not edit this artifact directly.
 
 npkglib
-====
+=======
 
 A small, composable Python utility library for reuse across npkg projects.
 

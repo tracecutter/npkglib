@@ -215,7 +215,11 @@ init-gh:
 		CUR_BRANCH=$$(git branch --show-current); \
 		git checkout --orphan gh-pages >/dev/null 2>&1; \
 		git rm -rf . >/dev/null 2>&1 || true; \
-		printf "<!doctype html><meta charset=\"utf-8\"><title>$(PROJECT_NAME)</title><h1>$(PROJECT_NAME)</h1><p>GitHub Pages branch initialized.</p>\n" > index.html; \
+		@printf "<!doctype html>\n" > index.html; \
+		printf "<meta charset=\"utf-8\">\n" >> index.html; \
+		printf "<title>$(PROJECT_NAME)</title>\n" >> index.html; \
+		printf "<h1>$(PROJECT_NAME)</h1>\n" >> index.html; \
+		printf "<p>GitHub Pages branch initialized.</p>\n" >> index.html; \
 		touch .nojekyll; \
 		git add index.html .nojekyll; \
 		git commit -m "Initialize gh-pages" >/dev/null; \
@@ -251,7 +255,7 @@ reinstate:
 	$(call ensure-venv-active)
 	$(call ensure-correct-venv)
 	@echo "🔎 Validating declared intent…"
-	@pfig lint || (echo "❌ Package dependency version problem; fix with 'pfig restate' or edit pyproject.toml" && exit 1)
+	@pfig lint || (echo "❌ Package dependency version problem; fix: 'pfig restate' or edit pyproject.toml" && exit 1)
 	@echo "♻️  Reinstating environment to declared intent (eager)…"
 	python -m pip install -U pip setuptools wheel
 	python -m pip install --upgrade-strategy eager --editable .[dev]

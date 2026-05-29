@@ -1,5 +1,5 @@
 """
-docs.npkglib.backends.readme
+docs.psym.backends.readme
 
 Render the README.md documentation artifact.
 

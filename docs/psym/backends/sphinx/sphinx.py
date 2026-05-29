@@ -168,48 +168,47 @@ class SphinxBackend(Backend):
                 render_hooks=self,
             )
 
-        module_template = Template.from_file(ctx.docs_root / "templates/sphinx/03_reference/module.rst.pf")
+            module_template = Template.from_file(ctx.docs_root / "templates/sphinx/03_reference/module.rst.pf")
 
-        for name, _ in modules:
-            symtab = ctx.symbols.clone()
+            for name, _ in modules:
+                symtab = ctx.symbols.clone()
 
-            pkg = importlib.import_module(pkg_name)
-            pkg_dir = Path(pkg.__file__).parent
-            module_path = pkg_dir / f"{name}.py"
+                pkg = importlib.import_module(pkg_name)
+                pkg_dir = Path(pkg.__file__).parent
+                module_path = pkg_dir / f"{name}.py"
 
-            # ------------------------------------------------------------
-            # extract module symbols (produces code.<module>.*)
-            # ------------------------------------------------------------
-            symbols_code_extract(symtab, [module_path])
+                # extract module symbols, produces: code.<module>.*
+                symbols_code_extract(symtab, [module_path])
 
-            # ------------------------------------------------------------
-            # project module scope: code.<module>.* → dynamic.code.*
-            # ------------------------------------------------------------
-            prefix = f"code.{name}."
+                # project module scope: code.<module>.* → dynamic.code.*
+                prefix = f"code.{name}."
 
-            for key, sym in list(symtab.items()):
-                if key.startswith(prefix):
-                    short = "dynamic.code." + key[len(prefix) :]
+                for key, value in list(symtab.items()):
+                    if not key.startswith(prefix):
+                        continue
 
-                    value = getattr(sym, "value", sym)
-                    fmt = getattr(sym, "fmt", None)
-                    origin = getattr(sym, "origin", "sphinx")
+                    short = "dynamic.code." + key[len(prefix):]
 
-                    symbol_add(
-                        symtab,
-                        short,
-                        value,
-                        fmt=fmt,
-                        origin=f"{origin} (projected)",
-                    )
+                    # RST requires document titles to be followed by an underline
+                    # of matching length. We special-case the projected module title here.
+                    if short == "dynamic.code.meta.title":
+                        value = f"{value}\n{'=' * len(value)}"
+                        fmt = "rst"
+                        origin = "backend.sphinx"
+                    else:
+                        fmt = "md"
+                        origin = "backend.sphinx"
 
-            yield RenderJob(
-                template=module_template,
-                symbols=symtab,
-                output_path=Path(f"sphinx/03_reference/{name}.rst"),
-                fmt="rst",
-                render_hooks=self,
-            )
+                    symbol_add(symtab, short, value, fmt=fmt, origin=origin)
+
+                # yield module RenderJob
+                yield RenderJob(
+                    template=module_template,
+                    symbols=symtab,
+                    output_path=Path(f"sphinx/03_reference/{name}.rst"),
+                    fmt="rst",
+                    render_hooks=self,
+                )
 
 
 # ---------------------------------------------------------------------------

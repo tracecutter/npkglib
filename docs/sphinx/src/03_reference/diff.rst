@@ -1,5 +1,5 @@
 diff
-====================
+====
 
 Structured diff detection and rendering utilities.
 

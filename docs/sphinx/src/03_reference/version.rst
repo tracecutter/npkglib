@@ -1,10 +1,12 @@
-{{ dynamic.code.meta.title }}
-====================
+Version utilities
+=================
 
-{{ dynamic.code.meta.tagline }}
+Pure helpers for parsing and incrementing semantic version strings.
 
-{{ dynamic.code.description }}
+Provides small, reusable primitives for working with version strings. These functions operate purely on strings and raise standard exceptions on invalid input.
 
-{{ dynamic.code.usage }}
+No filesystem access, configuration, or project semantics are involved.
 
-{{ dynamic.code.notes }}
+Used by tools such as pfig and pfix to update version identifiers in their respective configuration files.
+
+This module does not enforce full semantic versioning rules. It assumes a simple MAJOR.MINOR.PATCH structure and ignores pre-release or build metadata.

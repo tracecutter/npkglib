@@ -1,5 +1,5 @@
 guppy
-====================
+=====
 
 Lightweight event bus and publication pipeline.
 

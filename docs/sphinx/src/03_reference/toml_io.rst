@@ -1,5 +1,5 @@
 toml_io
-====================
+=======
 
 Round-trippable TOML handling with dotted-key access.
 

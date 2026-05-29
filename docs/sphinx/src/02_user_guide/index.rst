@@ -14,7 +14,7 @@ Rather than re-implementing common patterns, projects depend on npkglib to suppl
 Modules
 -------
 
-* **api**
+* **api_gen**
 * **diff**
 * **exceptions**
 * **fmt**
