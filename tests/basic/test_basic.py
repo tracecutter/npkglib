@@ -4,7 +4,7 @@ npkglib.tests.basic.test_basic
 INTERNAL
 
 :copyright: Copyright (c) 2025 John Fogelin.
-:license: PROPRIETARY, see LICENSE for details.
+:license: MIT, see LICENSE for details.
 """
 
 

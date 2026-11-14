@@ -63,7 +63,7 @@ INTERNAL
 This module exports styley freaky to avoid look and feel leaky.
 
 :copyright: Copyright (c) 2026 John Fogelin.
-:license: PROPRIETARY, see LICENSE for details.
+:license: MIT, see LICENSE for details.
 """
 
 

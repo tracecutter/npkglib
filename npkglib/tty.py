@@ -46,7 +46,7 @@ INTERNAL
 Return terminal width when stdout is a TTY; otherwise return unbounded width.
 
 :copyright: Copyright (c) 2026 John Fogelin.
-:license: PROPRIETARY, see LICENSE for details.
+:license: MIT, see LICENSE for details.
 """
 
 import sys

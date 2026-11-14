@@ -48,7 +48,7 @@ This module defines the public metadata surface for npkglib and is used
 by documentation tooling to extract structured symbols.
 
 :copyright: Copyright (c) 2026 John Fogelin.
-:license: PROPRIETARY, see LICENSE for details.
+:license: MIT, see LICENSE for details.
 """
 
 from importlib.metadata import PackageNotFoundError, version

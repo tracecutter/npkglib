@@ -33,7 +33,7 @@ base type unless specific error categories provide clear value.
 INTERNAL
 
 :copyright: Copyright (c) 2026 John Fogelin.
-:license: PROPRIETARY, see LICENSE for details.
+:license: MIT, see LICENSE for details.
 """
 
 

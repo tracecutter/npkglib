@@ -34,7 +34,7 @@ metadata.
 INTERNAL
 
 :copyright: Copyright (c) 2026 John Fogelin.
-:license: PROPRIETARY, see LICENSE for details.
+:license: MIT, see LICENSE for details.
 """
 
 from packaging.version import Version, InvalidVersion
